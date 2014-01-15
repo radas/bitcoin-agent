@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar maven-assembly-plugin.jar
+java -jar bitcoin-agent.jar

@@ -1,13 +1,21 @@
 package cz.kavan.radek;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 
 public class AppStart {
 
-    private static Logger logger = Logger.getLogger(AppStart.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(AppStart.class);
 
-    public static void main(String[] args) {
-        logger.info("Hello World!");
-    }
+	public static void main(String[] args) {
+		logger.info("Starting bitcoin trade agent!");
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+ 
+	}
 
 }
