@@ -3,18 +3,20 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="bitcoinAgent" class="cz.kavan.radek.scheduler.BitcoinAgent" />
+	<bean id="bitcoinAgent" class="cz.kavan.radek.agent.bitcoin.scheduler.BitcoinAgent">
+		<property name="bitstamp" ref="bitstamp" />
+	</bean>
 
 	<bean id="bitcoinAgentJob"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="bitcoinAgent" />
-		<property name="targetMethod" value="printCurrentTime" />
+		<property name="targetMethod" value="startScheduler" />
 	</bean>
 
 
 	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="bitcoinAgentJob" />
-		<property name="cronExpression" value="0 */10 * * * ?" />
+		<property name="cronExpression" value="0 */1 * * * ?" />
 	</bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
