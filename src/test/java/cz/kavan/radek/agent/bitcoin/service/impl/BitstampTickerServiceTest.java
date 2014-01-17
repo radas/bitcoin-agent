@@ -1,7 +1,7 @@
 package cz.kavan.radek.agent.bitcoin.service.impl;
 
+import static org.junit.Assert.assertNotNull;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,20 +17,21 @@ import cz.kavan.radek.agent.bitcoin.domain.bitstamp.Ticker;
 @ContextConfiguration(loader = SpringockitoContextLoader.class, locations = { "classpath:/bitstamp-ticker-service-test.xml" })
 public class BitstampTickerServiceTest {
 
-    @Autowired
-    private RestTemplate restTemplate;
+	@Autowired
+	private RestTemplate restTemplate;
 
-    @Before
-    public void setUp() throws Exception {
-        // http://pfelitti87.blogspot.no/2012/07/rest-services-with-spring-3-xml-json.html
-    }
+	@Before
+	public void setUp() throws Exception {
+		// http://pfelitti87.blogspot.no/2012/07/rest-services-with-spring-3-xml-json.html
+	}
 
-    @Test
-    public void restJsonClientTest() {
+	@Test
+	public void restJsonClientTest() {
 
-        Ticker ticker = restTemplate.getForObject("https://www.bitstamp.net/api/ticker/", Ticker.class);
+		Ticker ticker = restTemplate.getForObject(
+				"https://www.bitstamp.net/api/ticker/", Ticker.class);
 
-        Assert.assertNotNull(ticker);
-    }
+		assertNotNull(ticker);
+	}
 
 }
