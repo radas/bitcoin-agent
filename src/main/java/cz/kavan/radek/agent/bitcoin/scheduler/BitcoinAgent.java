@@ -1,4 +1,4 @@
-package cz.kavan.radek.scheduler;
+package cz.kavan.radek.agent.bitcoin.scheduler;
 
 import java.util.Calendar;
 

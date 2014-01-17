@@ -1,4 +1,4 @@
-package cz.kavan.radek;
+package cz.kavan.radek.agent.bitcoin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
