@@ -12,7 +12,7 @@
 	<context:property-placeholder location="classpath:bitstamp.properties" />
 
 	<bean id="bitstamp"
-		class="cz.kavan.radek.agent.bitcoin.bitstamp.impl.BitstampClientImpl">
+		class="cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl">
 		<property name="bitstampUrl" value="${bitstampUrl}" />
 		<property name="restTemplate" ref="restTemplate" />
 	</bean>

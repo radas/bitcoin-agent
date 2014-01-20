@@ -1,4 +1,4 @@
-package cz.kavan.radek.agent.bitcoin.bitstamp.impl;
+package cz.kavan.radek.agent.bitcoin.service.impl;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -10,10 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import cz.kavan.radek.agent.bitcoin.domain.bitstamp.Ticker;
+import cz.kavan.radek.agent.bitcoin.domain.Ticker;
+import cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = SpringockitoContextLoader.class, locations = { "classpath:/bitstamp-ticker-service-test.xml" })
+@ContextConfiguration(loader = SpringockitoContextLoader.class, locations = { "classpath:/bitstamp-web-service-test.xml" })
 public class BitstampClientImplTest {
 
     @Autowired
