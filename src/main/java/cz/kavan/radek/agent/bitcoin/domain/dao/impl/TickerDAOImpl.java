@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import cz.kavan.radek.agent.bitcoin.domain.Ticker;
 import cz.kavan.radek.agent.bitcoin.domain.dao.TickerDAO;
 
-@Repository("tickerDAO")
+@Repository
 public class TickerDAOImpl implements TickerDAO {
 
     @Autowired
@@ -24,7 +24,7 @@ public class TickerDAOImpl implements TickerDAO {
     @SuppressWarnings("unchecked")
     @Override
     public List<Ticker> getTickers() {
-        return sessionFactory.getCurrentSession().createQuery("from TickerEntity").list();
+        return sessionFactory.getCurrentSession().createQuery("from Ticker").list();
     }
 
 }

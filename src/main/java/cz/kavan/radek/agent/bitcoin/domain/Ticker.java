@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "bitcoin_status")
+@Table(name = "bitstamp_ticker")
 public class Ticker {
 
     @Column(name = "sell", nullable = false)
