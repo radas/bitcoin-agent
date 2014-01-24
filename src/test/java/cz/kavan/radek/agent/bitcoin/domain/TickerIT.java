@@ -7,9 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.classic.Session;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -28,39 +25,27 @@ import cz.kavan.radek.test.annotation.IntegrationTest;
 public class TickerIT {
 
     @Autowired
-    private SessionFactory sessionFactory;
-
-    @Autowired
     private TickerDAO tickerDAO;
-
-    private Session currentSession;
-
-    @Before
-    public void setUp() throws Exception {
-        currentSession = sessionFactory.getCurrentSession();
-    }
 
     @Test
     public void shouldHaveASessionFactory() {
-        assertNotNull(sessionFactory);
+        assertNotNull(tickerDAO);
     }
 
     @Test
     public void shouldHaveNoObjectsAtStart() {
-        List<?> results = currentSession.createQuery("from Ticker").list();
+        List<Ticker> results = tickerDAO.getTickers();
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void shouldBeAbleToPersistAnObject() {
-        assertEquals(0, currentSession.createQuery("from Ticker").list().size());
+        assertEquals(0, tickerDAO.getTickers().size());
 
-        Ticker jobUser = new Ticker();
-        jobUser.setAsk(new BigDecimal("10.0"));
-        jobUser.setBid(new BigDecimal("5.0"));
-        currentSession.persist(jobUser);
-        currentSession.flush();
-        assertEquals(1, currentSession.createQuery("from Ticker").list().size());
+        Ticker ticker = new Ticker();
+        ticker.setAsk(new BigDecimal("10.0"));
+        ticker.setBid(new BigDecimal("5.0"));
+        tickerDAO.addTicker(ticker);
+        assertEquals(1, tickerDAO.getTickers().size());
     }
-
 }

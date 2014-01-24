@@ -8,6 +8,7 @@
 	<!--  Agents definitions -->
 	<bean id="bitcoinActualTradeAgent" class="cz.kavan.radek.agent.bitcoin.scheduler.impl.BitcoinActualTradeAgent">
 		<property name="bitstamp" ref="bitstamp" />
+		<property name="tickerDAO" ref="tickerDAO" />
 	</bean>
 
 

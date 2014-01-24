@@ -69,6 +69,19 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.26</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
 		<!-- OTHER dependencies -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
