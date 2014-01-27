@@ -1,34 +1,16 @@
 package cz.kavan.radek.agent.bitcoin.domain;
 
-import static javax.persistence.GenerationType.AUTO;
-
 import java.math.BigDecimal;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "bitstamp_ticker")
 public class Ticker {
 
-    @Column(name = "sell", nullable = false)
     private BigDecimal bid;
-
-    @Column(name = "buy", nullable = false)
     private BigDecimal ask;
+    private long timestamp;
     private BigDecimal high;
     private BigDecimal last;
-    private BigDecimal timestamp;
     private BigDecimal volume;
     private BigDecimal low;
-
-    @Id
-    @GeneratedValue(strategy = AUTO)
-    @Column
-    private long id;
 
     public Ticker() {
         super();
@@ -50,11 +32,11 @@ public class Ticker {
         this.last = last;
     }
 
-    public BigDecimal getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(BigDecimal timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 

@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import cz.kavan.radek.agent.bitcoin.domain.Ticker;
 import cz.kavan.radek.agent.bitcoin.domain.dao.TickerDAO;
+import cz.kavan.radek.agent.bitcoin.domain.entity.TickerEntity;
 
 @Repository
 public class TickerDAOImpl implements TickerDAO {
@@ -18,7 +18,7 @@ public class TickerDAOImpl implements TickerDAO {
 
     @Override
     @Transactional
-    public void addTicker(Ticker ticker) {
+    public void addTicker(TickerEntity ticker) {
         sessionFactory.getCurrentSession().save(ticker);
 
     }
@@ -26,8 +26,8 @@ public class TickerDAOImpl implements TickerDAO {
     @SuppressWarnings("unchecked")
     @Override
     @Transactional
-    public List<Ticker> getTickers() {
-        return sessionFactory.getCurrentSession().createQuery("from Ticker").list();
+    public List<TickerEntity> getTickers() {
+        return sessionFactory.getCurrentSession().createQuery("from TickerEntity").list();
     }
 
 }

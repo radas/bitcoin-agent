@@ -15,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cz.kavan.radek.agent.bitcoin.domain.Ticker;
-import cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl;
 import cz.kavan.radek.test.annotation.IntegrationTest;
 
 @Category(IntegrationTest.class)
@@ -26,18 +25,19 @@ public class BitstampClientImplIT {
     @Autowired
     private BitstampClientImpl bitstamp;
 
+    private Ticker ticker;
+
     @Before
     public void setUp() throws Exception {
+        ticker = bitstamp.getActualMarket();
     }
 
     @Test
     public void getActualMarketIT() {
-
-        Ticker ticker = bitstamp.getActualMarket();
-
         assertNotNull(ticker);
         assertThat(ticker.getAsk(), greaterThan(new BigDecimal("100")));
         assertThat(ticker.getBid(), greaterThan(new BigDecimal("100")));
+        assertThat(ticker.getTimestamp(), greaterThan(1390654556L));
 
     }
 

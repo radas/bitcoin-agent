@@ -1,14 +1,16 @@
 package cz.kavan.radek.agent.bitcoin.scheduler.impl;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cz.kavan.radek.agent.bitcoin.domain.Ticker;
 import cz.kavan.radek.agent.bitcoin.domain.dao.TickerDAO;
+import cz.kavan.radek.agent.bitcoin.domain.entity.TickerEntity;
 import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
 import cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl;
+import cz.kavan.radek.agent.bitcoin.utils.TimeUtil;
 
 public class BitcoinActualTradeAgent implements Agent {
 
@@ -19,6 +21,7 @@ public class BitcoinActualTradeAgent implements Agent {
 
     private BigDecimal bid; // nejvyšší nákupní nabídka - za tohle prodavam
     private BigDecimal ask; // Nejnižší prodejní nabídka - za tohle nakupuji
+    private long timestamp;
 
     @Override
     public void startAgent() {
@@ -31,7 +34,7 @@ public class BitcoinActualTradeAgent implements Agent {
 
     }
 
-    private void populateTradeInfo() {
+    private void populateTradeInfo() throws ParseException {
         initBidAskValues();
         writeTradeInfo();
     }
@@ -40,19 +43,22 @@ public class BitcoinActualTradeAgent implements Agent {
         if (bitstamp.getActualMarket() != null) {
             bid = bitstamp.getActualMarket().getBid();
             ask = bitstamp.getActualMarket().getAsk();
+            timestamp = bitstamp.getActualMarket().getTimestamp();
         }
     }
 
-    private void writeTradeInfo() {
-        if (bid == null | ask == null) {
-            logger.error("Can't get info about trade.");
+    private void writeTradeInfo() throws ParseException {
+        if (bid == null || ask == null) {
+            logger.debug("Can't get info about trade.");
             throw new IllegalArgumentException("Can't get info about trade.");
         }
-        logger.info("Status of trading. Sell: {} Buy: {}", bid, ask);
+        logger.debug("Status of trading. Sell: {} Buy: {}", bid, ask);
 
-        Ticker ticker = new Ticker();
-        ticker.setAsk(new BigDecimal("10.0"));
-        ticker.setBid(new BigDecimal("5.0"));
+        TickerEntity ticker = new TickerEntity();
+        ticker.setAsk(ask);
+        ticker.setBid(bid);
+
+        ticker.setTimestamp(TimeUtil.convertTimestampLocalDateTime(timestamp));
         tickerDAO.addTicker(ticker);
 
     }
