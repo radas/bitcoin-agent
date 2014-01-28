@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar bitcoin-agent.jar
+java -server -Xmx64m -jar bitcoin-agent.jar
