@@ -6,6 +6,7 @@ import java.text.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cz.kavan.radek.agent.bitcoin.domain.Ticker;
 import cz.kavan.radek.agent.bitcoin.domain.dao.TickerDAO;
 import cz.kavan.radek.agent.bitcoin.domain.entity.TickerEntity;
 import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
@@ -40,10 +41,13 @@ public class BitcoinActualTradeAgent implements Agent {
     }
 
     private void initBidAskValues() {
-        if (bitstamp.getActualMarket() != null) {
-            bid = bitstamp.getActualMarket().getBid();
-            ask = bitstamp.getActualMarket().getAsk();
-            timestamp = bitstamp.getActualMarket().getTimestamp();
+        Ticker bitstampMarket = bitstamp.getActualMarket();
+
+        if (bitstampMarket != null) {
+
+            bid = bitstampMarket.getBid();
+            ask = bitstampMarket.getAsk();
+            timestamp = bitstampMarket.getTimestamp();
         }
     }
 

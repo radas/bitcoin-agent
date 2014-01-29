@@ -55,7 +55,6 @@ public class TickerEntityIT {
 
         assertEquals(0, tickerDAO.getTickers().size());
 
-        ticker = new TickerEntity();
         ticker.setAsk(new BigDecimal("10.0"));
         ticker.setBid(new BigDecimal("5.0"));
         ticker.setTimestamp(new DateTime());

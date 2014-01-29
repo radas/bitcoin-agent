@@ -14,3 +14,15 @@ CREATE TABLE bitstamp_ticker
     created TIMESTAMP NOT NULL DEFAULT NOW(),
     trade_time timestamp
 );
+
+DROP TABLE IF EXISTS bitstamp_api;
+
+CREATE TABLE bitstamp_api
+(
+    id      INT PRIMARY KEY AUTO_INCREMENT,
+    api_key   VARCHAR(200),
+    secret   VARCHAR(200)
+);
+
+INSERT INTO bitstamp_api (api_key, secret) VALUES ('api_key, 'secret');
+
