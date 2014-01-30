@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS bitstamp_ticker;
 
 CREATE TABLE bitstamp_ticker
 (
-    id      INT PRIMARY KEY AUTO_INCREMENT,
+    id      BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     sell    DECIMAL(10,2),
     buy     DECIMAL(10,2),
     created TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -19,10 +19,11 @@ DROP TABLE IF EXISTS bitstamp_api;
 
 CREATE TABLE bitstamp_api
 (
-    id      INT PRIMARY KEY AUTO_INCREMENT,
+    id      BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     api_key   VARCHAR(200),
     secret   VARCHAR(200)
+    client_id INT UNSIGNED
 );
 
-INSERT INTO bitstamp_api (api_key, secret) VALUES ('api_key, 'secret');
+INSERT INTO bitstamp_api (api_key, secret, client_id) VALUES ('api_key', 'secret', '123456');
 

@@ -14,7 +14,7 @@
 			</pattern>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>log/bitcoin-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+			<fileNamePattern>logs/bitcoin-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<maxFileSize>10MB</maxFileSize>
