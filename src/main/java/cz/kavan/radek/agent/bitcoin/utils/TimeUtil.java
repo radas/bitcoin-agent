@@ -8,4 +8,8 @@ public class TimeUtil {
         return new DateTime(timestamp * 1000).plusHours(1);
     }
 
+    public static long getTimestamp() {
+        return new DateTime().getMillis();
+    }
+
 }

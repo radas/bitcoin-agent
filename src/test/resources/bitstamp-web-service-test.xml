@@ -6,7 +6,7 @@
         http://www.mockito.org/spring/mockito https://bitbucket.org/kubek2k/springockito/raw/tip/springockito/src/main/resources/spring/mockito.xsd">
 
 	<bean id="apiKeyGenerator" class="cz.kavan.radek.agent.bitcoin.utils.ApiKeyGenerator">
-		<constructor-arg ref="apiKeyDAO" />
+		<property name="apiKeyDAO" ref="apiKeyDAO" />
 	</bean>
 
 	<mockito:mock id="apiKeyDAO"

@@ -44,11 +44,13 @@ public class ApiKeyEntityIT {
 
         apiKeyEntity.setApiKey("API KEY");
         apiKeyEntity.setApiSecret("API SECRET");
+        apiKeyEntity.setApiClientId("11551");
         apiKeyDAO.addApiKey(apiKeyEntity);
 
         ApiKeyEntity results = apiKeyDAO.getApiAndSecretKey();
         assertEquals("API KEY", results.getApiKey());
         assertEquals("API SECRET", results.getApiSecret());
+        assertEquals("11551", results.getApiClientId());
 
     }
 }

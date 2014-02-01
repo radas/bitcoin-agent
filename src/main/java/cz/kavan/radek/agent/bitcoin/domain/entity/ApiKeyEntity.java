@@ -18,6 +18,9 @@ public class ApiKeyEntity {
     @Column(name = "secret", nullable = false)
     private String apiSecret;
 
+    @Column(name = "client_id", nullable = false)
+    private String apiClientId;
+
     public ApiKeyEntity() {
         super();
     }
@@ -41,6 +44,14 @@ public class ApiKeyEntity {
 
     public void setApiSecret(String apiSecret) {
         this.apiSecret = apiSecret;
+    }
+
+    public String getApiClientId() {
+        return apiClientId;
+    }
+
+    public void setApiClientId(String apiClientId) {
+        this.apiClientId = apiClientId;
     }
 
 }

@@ -61,7 +61,7 @@
 			<version>${hibernate.version}</version>
 			<classifier>tests</classifier>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
@@ -107,6 +107,12 @@
 			<artifactId>javassist</artifactId>
 			<version>3.16.1-GA</version>
 			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.9</version>
 		</dependency>
 
 		<!-- LOGGING PART DEPENDENCY -->

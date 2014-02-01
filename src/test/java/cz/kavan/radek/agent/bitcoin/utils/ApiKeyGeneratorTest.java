@@ -1,5 +1,6 @@
 package cz.kavan.radek.agent.bitcoin.utils;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -28,17 +29,31 @@ public class ApiKeyGeneratorTest {
         ApiKeyEntity apiKeyEntity = new ApiKeyEntity();
         apiKeyEntity.setApiKey("API KEY");
         apiKeyEntity.setApiSecret("API SECRET");
+        apiKeyEntity.setApiClientId("156447");
 
-        when(apiKeyDAO.getApiAndSecretKey().getApiKey()).thenReturn("KEY");
-        when(apiKeyDAO.getApiAndSecretKey().getApiSecret()).thenReturn("KEY");
-
-        // when(apiKeyDAO.getApiAndSecretKey()).thenReturn(apiKeyEntity);
+        when(apiKeyDAO.getApiAndSecretKey()).thenReturn(apiKeyEntity);
 
     }
 
     @Test
-    public void getKey() {
-        System.out.println(apiKeyGenerator.getKey());
+    public void getApiKey() {
+        assertEquals("API KEY", apiKeyGenerator.getApiKey());
     }
 
+    @Test
+    public void getApiClientId() {
+        assertEquals("156447", apiKeyGenerator.getClientApiId());
+    }
+
+    @Test
+    public void getNonce() {
+        assertEquals(String.valueOf(TimeUtil.getTimestamp()).substring(0, 10),
+                apiKeyGenerator.getNonce().substring(0, 10));
+    }
+
+    @Test
+    public void getApiSignature() throws Exception {
+        final String expectedSignature = "E913DE76EAA94B7DED740B8D0FA2AD6DCE5C244CD24ECA249556E371A2B157E7";
+        assertEquals(expectedSignature, apiKeyGenerator.getApiSignature("1391245019"));
+    }
 }
