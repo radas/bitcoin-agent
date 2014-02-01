@@ -36,4 +36,6 @@
 	</bean>
 
 	<bean id="tickerDAO" class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.TickerDAOImpl"></bean>
+	
+	<bean id="apiKeyDAO" class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.ApiKeyDAOImpl"></bean>
 </beans>

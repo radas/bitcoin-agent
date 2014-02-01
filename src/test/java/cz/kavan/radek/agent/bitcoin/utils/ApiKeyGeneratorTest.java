@@ -27,8 +27,8 @@ public class ApiKeyGeneratorTest {
     @Before
     public void setUp() throws Exception {
         ApiKeyEntity apiKeyEntity = new ApiKeyEntity();
-        apiKeyEntity.setApiKey("API KEY");
-        apiKeyEntity.setApiSecret("API SECRET");
+        apiKeyEntity.setApiKey(Protector.encryptApiKey("API KEY"));
+        apiKeyEntity.setApiSecret(Protector.encryptApiKey("API SECRET"));
         apiKeyEntity.setApiClientId("156447");
 
         when(apiKeyDAO.getApiAndSecretKey()).thenReturn(apiKeyEntity);
@@ -36,7 +36,7 @@ public class ApiKeyGeneratorTest {
     }
 
     @Test
-    public void getApiKey() {
+    public void getApiKey() throws Exception {
         assertEquals("API KEY", apiKeyGenerator.getApiKey());
     }
 
@@ -47,8 +47,8 @@ public class ApiKeyGeneratorTest {
 
     @Test
     public void getNonce() {
-        assertEquals(String.valueOf(TimeUtil.getTimestamp()).substring(0, 10),
-                apiKeyGenerator.getNonce().substring(0, 10));
+        assertEquals(String.valueOf(TimeUtil.getTimestamp()).substring(0, 9), apiKeyGenerator.getNonce()
+                .substring(0, 9));
     }
 
     @Test

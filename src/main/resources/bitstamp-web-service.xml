@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mockito="http://www.mockito.org/spring/mockito"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mockito="http://www.mockito.org/spring/mockito"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
        http://www.mockito.org/spring/mockito 
@@ -15,14 +15,21 @@
 	<bean id="bitstamp"
 		class="cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl">
 		<property name="bitstampUrl" value="${bitstampUrl}" />
+		<property name="bitstampBalanceUrl" value="bitstampBalanceUrl" />
+		<property name="apiKeyGenerator" ref="apiKeyGenerator" />
 		<property name="restTemplate" ref="restTemplate" />
+	</bean>
+
+	<bean id="apiKeyGenerator" class="cz.kavan.radek.agent.bitcoin.utils.ApiKeyGenerator">
+		<property name="apiKeyDAO" ref="apiKeyDAO" />
 	</bean>
 
 
 	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
 		<property name="messageConverters">
 			<list>
-				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+				<bean
+					class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
 			</list>
 		</property>
 	</bean>

@@ -1,8 +1,5 @@
 package cz.kavan.radek.agent.bitcoin.utils;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -15,7 +12,7 @@ public class ApiKeyGenerator {
     private ApiKeyDAO apiKeyDAO;
     private static final String CRYPT_ALG = "HmacSHA256";
 
-    public String getApiSignature(String nonce) throws InvalidKeyException, NoSuchAlgorithmException {
+    public String getApiSignature(String nonce) throws Exception {
         Mac sha256_HMAC = populateSecretKeySpec();
 
         byte[] hash = sha256_HMAC.doFinal(generateApiMessage(nonce).getBytes());
@@ -24,14 +21,14 @@ public class ApiKeyGenerator {
 
     }
 
-    private Mac populateSecretKeySpec() throws NoSuchAlgorithmException, InvalidKeyException {
+    private Mac populateSecretKeySpec() throws Exception {
         Mac sha256_HMAC = Mac.getInstance(CRYPT_ALG);
         SecretKeySpec secretKey = new SecretKeySpec(getApiSecret().getBytes(), CRYPT_ALG);
         sha256_HMAC.init(secretKey);
         return sha256_HMAC;
     }
 
-    private String generateApiMessage(String nonce) {
+    private String generateApiMessage(String nonce) throws Exception {
         return nonce + getClientApiId() + getApiKey();
     }
 
@@ -39,16 +36,18 @@ public class ApiKeyGenerator {
         return apiKeyDAO.getApiAndSecretKey().getApiClientId();
     }
 
-    protected String getApiKey() {
-        return apiKeyDAO.getApiAndSecretKey().getApiKey();
+    public String getApiKey() throws Exception {
+        String apiKey = apiKeyDAO.getApiAndSecretKey().getApiKey();
+        return Protector.decryptApiKey(apiKey);
     }
 
-    protected String getNonce() {
+    public String getNonce() {
         return String.valueOf(TimeUtil.getTimestamp());
     }
 
-    public String getApiSecret() {
-        return apiKeyDAO.getApiAndSecretKey().getApiSecret();
+    public String getApiSecret() throws Exception {
+        String apiSecret = apiKeyDAO.getApiAndSecretKey().getApiSecret();
+        return Protector.decryptApiKey(apiSecret);
     }
 
     public void setApiKeyDAO(ApiKeyDAO apiKeyDAO) {
