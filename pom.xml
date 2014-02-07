@@ -182,7 +182,15 @@
 			<artifactId>usertype.core</artifactId>
 			<version>3.0.0.CR1</version>
 		</dependency>
+        <!-- Ascpect dependencies -->
+        <dependency>
+          <groupId>org.aspectj</groupId>
+          <artifactId>aspectjrt</artifactId>
+          <version>1.7.4</version>
+        </dependency>
+        
 	</dependencies>
+    
 
 	<build>
 		<finalName>bitcoin-agent</finalName>
