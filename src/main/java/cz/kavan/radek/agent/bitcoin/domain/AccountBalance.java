@@ -11,6 +11,7 @@ public class AccountBalance {
     private BigDecimal usd_available;
     private BigDecimal btc_available;
     private BigDecimal fee;
+    private String error;
 
     public BigDecimal getUsd_balance() {
         return usd_balance;
@@ -66,6 +67,14 @@ public class AccountBalance {
 
     public void setFee(BigDecimal fee) {
         this.fee = fee;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 
 }

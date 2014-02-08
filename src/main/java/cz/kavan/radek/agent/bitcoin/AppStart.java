@@ -10,7 +10,7 @@ public class AppStart {
     private static final Logger logger = LoggerFactory.getLogger(AppStart.class);
 
     public static void main(String[] args) {
-        logger.info("Starting scheduler!");
+        logger.info("Starting application!");
 
         ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
 

@@ -14,6 +14,8 @@
 	<bean id="bitstamp"
 		class="cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl">
 		<property name="bitstampUrl" value="${bitstampUrl}" />
+		<property name="bitstampBalanceUrl" value="bitstampBalanceUrl" />
+		<property name="apiKeyGenerator" ref="apiKeyGenerator" />
 		<property name="restTemplate" ref="restTemplate" />
 	</bean>
 
@@ -47,6 +49,11 @@
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+
+	<bean id="apiKeyGenerator" class="cz.kavan.radek.agent.bitcoin.utils.ApiKeyGenerator">
+		<property name="apiKeyDAO" ref="apiKeyDAO" />
+	</bean>
+
 
 	<bean id="tickerDAO"
 		class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.TickerDAOImpl"></bean>

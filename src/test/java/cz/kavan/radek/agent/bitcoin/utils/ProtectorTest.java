@@ -3,7 +3,6 @@ package cz.kavan.radek.agent.bitcoin.utils;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ProtectorTest {
@@ -23,17 +22,18 @@ public class ProtectorTest {
 
     @Test
     public void decryptApiKey() throws Exception {
-        String decKey = Protector.decryptApiKey(Protector.encryptApiKey(apiKey));
-        assertEquals("AafaTHKAD662662A", decKey);
+        String encKey = Protector.encryptApiKey(apiKey);
+        String decKey = Protector.decryptApiKey(encKey);
+
+        assertEquals(apiKey, decKey);
     }
 
     @Test
-    @Ignore
     public void generateRealApiKeyAndSecret() throws Exception {
-        String decApiKey = Protector.encryptApiKey(Protector.encryptApiKey("DjOtCD65lL0SLHQE"));
+        String decApiKey = Protector.encryptApiKey("PXSIOeL5HKLuVNL5iiSrvTB8Qoe0QxvM");
         System.out.println(decApiKey);
 
-        String decSecret = Protector.encryptApiKey(Protector.encryptApiKey("7cIKLRY3oBwwO0YKbTbM"));
+        String decSecret = Protector.encryptApiKey("6nfUuCx8BQY98F1fX16PjmonfbPgiiu7");
         System.out.println(decSecret);
     }
 

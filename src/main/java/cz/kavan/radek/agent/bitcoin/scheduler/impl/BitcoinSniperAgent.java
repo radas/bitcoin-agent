@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
 import cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl;
 
-public class BitcoinSniper implements Agent {
+public class BitcoinSniperAgent implements Agent {
 
-    private static final Logger logger = LoggerFactory.getLogger(BitcoinSniper.class);
+    private static final Logger logger = LoggerFactory.getLogger(BitcoinSniperAgent.class);
 
     private BitstampClientImpl bitstamp;
 
@@ -23,7 +23,15 @@ public class BitcoinSniper implements Agent {
     }
 
     private void populateTradeSniper() {
-        // TODO Auto-generated method stub
+        bitstamp.getAccountBalance();
+
+        // if (accoutBalance == null) {
+        // throw new RuntimeException("Accout Balance is null!");
+        //
+        // }
+        // logger.debug("My accout balance. BTC: {} USD: {}",
+        // accoutBalance.getBtc_available(),
+        // accoutBalance.getUsd_available());
 
     }
 

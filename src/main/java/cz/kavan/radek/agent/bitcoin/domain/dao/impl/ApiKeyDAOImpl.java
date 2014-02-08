@@ -21,6 +21,7 @@ public class ApiKeyDAOImpl implements ApiKeyDAO {
     }
 
     @Override
+    @Transactional
     public void addApiKey(ApiKeyEntity apiKey) {
         sessionFactory.getCurrentSession().save(apiKey);
 

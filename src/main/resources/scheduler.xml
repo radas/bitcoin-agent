@@ -4,33 +4,51 @@
  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-   
-	<!--  Agents definitions -->
-	<bean id="bitcoinActualTradeAgent" class="cz.kavan.radek.agent.bitcoin.scheduler.impl.BitcoinActualTradeAgent">
+
+	<!-- Agents definitions -->
+	<bean id="bitcoinActualTradeAgent"
+		class="cz.kavan.radek.agent.bitcoin.scheduler.impl.BitcoinActualTradeAgent">
 		<property name="bitstamp" ref="bitstamp" />
 		<property name="tickerDAO" ref="tickerDAO" />
 	</bean>
 
+	<bean id="bitcoinSniperAgent"
+		class="cz.kavan.radek.agent.bitcoin.scheduler.impl.BitcoinSniperAgent">
+		<property name="bitstamp" ref="bitstamp" />
+	</bean>
 
-	<!--  Job definitions -->
+
+	<!-- Job definitions -->
 	<bean id="bitcoinActualTradeAgentJob"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="bitcoinActualTradeAgent" />
 		<property name="targetMethod" value="startAgent" />
 	</bean>
 
+	<bean id="bitcoinSniperAgentJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="bitcoinSniperAgent" />
+		<property name="targetMethod" value="startAgent" />
+	</bean>
 
-	<!--  Scheduler definitions -->
-	<bean id="bitcoinTradeTicker" class="org.springframework.scheduling.quartz.CronTriggerBean">
+
+	<!-- Scheduler definitions -->
+	<bean id="bitcoinActualTradeAgentScheduler" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="bitcoinActualTradeAgentJob" />
 		<property name="cronExpression" value="0 */10 * * * ?" />
+	</bean>
+
+	<bean id="bitcoinSniperAgentcheduler" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="bitcoinSniperAgentJob" />
+		<property name="cronExpression" value="0 */1 * * * ?" />
 	</bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="waitForJobsToCompleteOnShutdown" value="true" />
 		<property name="triggers">
 			<list>
-				<ref bean="bitcoinTradeTicker" />
+				<ref bean="bitcoinActualTradeAgentScheduler" />
+				<ref bean="bitcoinSniperAgentcheduler" />
 			</list>
 		</property>
 	</bean>

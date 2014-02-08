@@ -7,7 +7,8 @@
 		</encoder>
 	</appender>
 
-	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="fileAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>logs/bitcoin.log</file>
 		<encoder>
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
@@ -24,8 +25,79 @@
 	</appender>
 
 
-	<root level="ERROR">
+	<appender name="springAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/spring.log</file>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/spring-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>5</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+
+	<appender name="hibernateAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/hibernate.log</file>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/hibernate-%d{yyyy-MM-dd}.log.gz
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>5</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="quartzAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/quartz.log</file>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/quartz-%d{yyyy-MM-dd}.log.gz
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>5</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+
+	<logger name="cz.kavan.radek.agent.bitcoin" level="DEBUG">
+		<appender-ref ref="fileAppender" />
+	</logger>
+
+	<logger name="org.springframework" additivity="false" level="debug">
+		<appender-ref ref="springAppender" />
+	</logger>
+
+	<logger name="org.hibernate" additivity="false" level="DEBUG">
+		<appender-ref ref="hibernateAppender" />
+	</logger>
+
+	<logger name="org.quartz" additivity="false" level="DEBUG">
+		<appender-ref ref="quartzAppender" />
+	</logger>
+
+
+	<root level="DEBUG"> <!-- can set level to OFF -->
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="FILE" />
 	</root>
 </configuration>

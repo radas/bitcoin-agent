@@ -15,7 +15,7 @@
 	<bean id="bitstamp"
 		class="cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl">
 		<property name="bitstampUrl" value="${bitstampUrl}" />
-		<property name="bitstampBalanceUrl" value="bitstampBalanceUrl" />
+		<property name="bitstampBalanceUrl" value="${bitstampBalanceUrl}" />
 		<property name="apiKeyGenerator" ref="apiKeyGenerator" />
 		<property name="restTemplate" ref="restTemplate" />
 	</bean>
@@ -33,5 +33,4 @@
 			</list>
 		</property>
 	</bean>
-
 </beans>

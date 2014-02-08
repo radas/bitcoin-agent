@@ -1,27 +1,25 @@
 package cz.kavan.radek.agent.bitcoin.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import cz.kavan.radek.agent.bitcoin.domain.AccountBalance;
 import cz.kavan.radek.agent.bitcoin.domain.Ticker;
 import cz.kavan.radek.agent.bitcoin.service.BitstampClient;
 import cz.kavan.radek.agent.bitcoin.utils.ApiKeyGenerator;
 
-public class BitstampClientImpl implements BitstampClient {
+public class CopyOfBitstampClientImpl implements BitstampClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(BitstampClientImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(CopyOfBitstampClientImpl.class);
 
     private String bitstampUrl;
     private String bitstampBalanceUrl;
@@ -53,17 +51,37 @@ public class BitstampClientImpl implements BitstampClient {
             query += "&";
             query += "signature=" + apiKeyGenerator.getApiSignature(nonce);
 
-            List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
-            acceptableMediaTypes.add(MediaType.APPLICATION_JSON);// or any other
+            URL obj = new URL(bitstampBalanceUrl);
+            HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(acceptableMediaTypes);
+            String USER_AGENT = "Mozilla/5.0";
+            con.setRequestMethod("POST");
+            con.setRequestProperty("User-Agent", USER_AGENT);
+            con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-            HttpEntity<String> requestEntity = new HttpEntity<String>("key=XX&nonce=XX&signature=XX", headers);
-            ResponseEntity<AccountBalance> responseEntity = restTemplate.exchange(
-                    "https://www.bitstamp.net/api/balance/", HttpMethod.POST, requestEntity, AccountBalance.class);
+            // Send post request
+            con.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.writeBytes(query);
+            wr.flush();
+            wr.close();
 
-            System.err.println("TTTT");
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'POST' request to URL : " + bitstampBalanceUrl);
+            System.out.println("Post parameters : " + query);
+            System.out.println("Response Code : " + responseCode);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // print result
+            System.out.println(response.toString());
 
         } catch (Exception e) {
             throw new RuntimeException("Can't set bitstamp params", e);

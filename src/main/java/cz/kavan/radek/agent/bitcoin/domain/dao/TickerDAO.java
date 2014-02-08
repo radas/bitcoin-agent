@@ -6,8 +6,8 @@ import cz.kavan.radek.agent.bitcoin.domain.entity.TickerEntity;
 
 public interface TickerDAO {
 
-    public void addTicker(TickerEntity ticker);
+    void addTicker(TickerEntity ticker);
 
-    public List<TickerEntity> getTickers();
+    List<TickerEntity> getTickers();
 
 }
