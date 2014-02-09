@@ -1,2 +1,2 @@
 mvn clean install assembly:single
-#mvn assembly:assembly
+mvn jacoco:report

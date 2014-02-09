@@ -28,8 +28,8 @@
 	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
 		<property name="messageConverters">
 			<list>
-				<bean
-					class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.FormHttpMessageConverter" />
 			</list>
 		</property>
 	</bean>

@@ -24,7 +24,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">${jdbc.dialect}</prop>
-				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
 			</props>
 		</property>
 	</bean>
@@ -36,6 +36,8 @@
 	</bean>
 
 	<bean id="tickerDAO" class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.TickerDAOImpl"></bean>
+	
+	<bean id="balanceDAO" class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.AccountBalanceDAOImpl"></bean>
 	
 	<bean id="apiKeyDAO" class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.ApiKeyDAOImpl"></bean>
 </beans>

@@ -1,8 +1,5 @@
 package cz.kavan.radek.agent.bitcoin.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -43,46 +40,32 @@ public class BitstampClientImpl implements BitstampClient {
     }
 
     @Override
-    public void getAccountBalance() {
+    public ResponseEntity<AccountBalance> getAccountBalance() {
+
+        ResponseEntity<AccountBalance> responseEntity = null;
 
         try {
-            String nonce = apiKeyGenerator.getNonce();
-            String query = "key=" + apiKeyGenerator.getApiKey();
-            query += "&";
-            query += "nonce=" + nonce;
-            query += "&";
-            query += "signature=" + apiKeyGenerator.getApiSignature(nonce);
-
-            List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
-            acceptableMediaTypes.add(MediaType.APPLICATION_JSON);// or any other
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(acceptableMediaTypes);
-
-            HttpEntity<String> requestEntity = new HttpEntity<String>("key=XX&nonce=XX&signature=XX", headers);
-            ResponseEntity<AccountBalance> responseEntity = restTemplate.exchange(
-                    "https://www.bitstamp.net/api/balance/", HttpMethod.POST, requestEntity, AccountBalance.class);
-
-            System.err.println("TTTT");
-
+            responseEntity = restTemplate.exchange(bitstampBalanceUrl, HttpMethod.POST, setUpBitstampHeaders(),
+                    AccountBalance.class);
         } catch (Exception e) {
+            logger.error("Reason: {} : Can't set bitstamp params: " + bitstampBalanceUrl, e.getMessage(), e);
             throw new RuntimeException("Can't set bitstamp params", e);
         }
+        return responseEntity;
 
-        // try {
-        //
-        // accountBalance = restTemplate.exchange(bitstampBalanceUrl,
-        // HttpMethod.POST, requestEntity,
-        // AccountBalance.class);
-        // } catch (Exception e) {
-        // logger.error("Reason: {} : Can't connect to: " + bitstampBalanceUrl,
-        // e.getMessage(), e);
-        // new RuntimeException("Can't connect to: " + bitstampUrl, e);
-        // }
+    }
+
+    private HttpEntity<?> setUpBitstampHeaders() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(setUpBitstampParams(), headers);
+        return requestEntity;
     }
 
     private MultiValueMap<String, String> setUpBitstampParams() throws Exception {
         MultiValueMap<String, String> bitstampParam = new LinkedMultiValueMap<>();
+
         String nonce = apiKeyGenerator.getNonce();
         bitstampParam.add("key", apiKeyGenerator.getApiKey());
         bitstampParam.add("signature", apiKeyGenerator.getApiSignature(nonce));

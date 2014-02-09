@@ -63,6 +63,8 @@ public class TickerEntityIT {
         tickerDAO.addTicker(ticker);
 
         assertEquals(1, tickerDAO.getTickers().size());
+        assertEquals(new BigDecimal("10.0"), tickerDAO.getTickers().get(0).getAsk());
+        assertEquals(new BigDecimal("5.0"), tickerDAO.getTickers().get(0).getBid());
         assertEquals(19, tradeTime.getHourOfDay());
         assertEquals(45, tradeTime.getMinuteOfHour());
         assertEquals(34, tradeTime.getSecondOfMinute());

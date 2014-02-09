@@ -30,7 +30,7 @@ public class BitcoinActualTradeAgent implements Agent {
         try {
             populateTradeInfo();
         } catch (Exception e) {
-            logger.error("Something is wrong with: " + e);
+            logger.error("Something is wrong with BitcoinActualTradeAgent : " + e);
         }
 
     }
@@ -53,7 +53,7 @@ public class BitcoinActualTradeAgent implements Agent {
 
     private void writeTradeInfo() throws ParseException {
         if (bid == null || ask == null) {
-            logger.debug("Can't get info about trade.");
+            logger.error("Can't get info about trade.");
             throw new IllegalArgumentException("Can't get info about trade.");
         }
         logger.debug("Status of trading. Sell: {} Buy: {}", bid, ask);

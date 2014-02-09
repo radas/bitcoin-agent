@@ -15,6 +15,7 @@
 	<bean id="bitcoinSniperAgent"
 		class="cz.kavan.radek.agent.bitcoin.scheduler.impl.BitcoinSniperAgent">
 		<property name="bitstamp" ref="bitstamp" />
+		<property name="balanceDAO" ref="balanceDAO" />
 	</bean>
 
 
