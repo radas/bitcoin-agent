@@ -8,7 +8,7 @@ import cz.kavan.radek.agent.bitcoin.errorhandling.exception.AgentDataAccessExcep
 
 public class ExceptionTranslationAspect {
 
-    @Around("execution(* cz.kavan.radek.agent.bitcoin.domain..*(..))")
+    @Around("execution(* cz.kavan.radek.agent.bitcoin.domain.dao..*(..))")
     public Object translateToDataAccessException(ProceedingJoinPoint pjp) throws Throwable {
         try {
             return pjp.proceed();

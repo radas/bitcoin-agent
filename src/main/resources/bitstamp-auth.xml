@@ -12,20 +12,12 @@
 	<!-- properties placeholder -->
 	<context:property-placeholder location="classpath:bitstamp.properties" />
 
-	<bean id="bitstamp"
-		class="cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl">
-		<property name="bitstampUrl" value="${bitstampUrl}" />
-		<property name="bitstampBalanceUrl" value="${bitstampBalanceUrl}" />
-		<property name="bitstampAuth" ref="bitstampAuth" />
-		<property name="restTemplate" ref="restTemplate" />
+	<bean id="bitstampAuth"
+		class="cz.kavan.radek.agent.bitcoin.auth.impl.BitstampAuthImpl">
+		<property name="apiKeyGenerator" ref="apiKeyGenerator" />
 	</bean>
 
-	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
-		<property name="messageConverters">
-			<list>
-				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
-				<bean class="org.springframework.http.converter.FormHttpMessageConverter" />
-			</list>
-		</property>
+	<bean id="apiKeyGenerator" class="cz.kavan.radek.agent.bitcoin.utils.ApiKeyGenerator">
+		<property name="apiKeyDAO" ref="apiKeyDAO" />
 	</bean>
 </beans>

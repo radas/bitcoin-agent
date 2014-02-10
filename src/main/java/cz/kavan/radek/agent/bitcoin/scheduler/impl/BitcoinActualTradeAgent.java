@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cz.kavan.radek.agent.bitcoin.domain.Ticker;
+import cz.kavan.radek.agent.bitcoin.domain.dao.RatingDAO;
 import cz.kavan.radek.agent.bitcoin.domain.dao.TickerDAO;
 import cz.kavan.radek.agent.bitcoin.domain.entity.TickerEntity;
 import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
@@ -19,6 +20,7 @@ public class BitcoinActualTradeAgent implements Agent {
 
     private BitstampClientImpl bitstamp;
     private TickerDAO tickerDAO;
+    private RatingDAO ratingDAO;
 
     private BigDecimal bid; // nejvyšší nákupní nabídka - za tohle prodavam
     private BigDecimal ask; // Nejnižší prodejní nabídka - za tohle nakupuji
@@ -58,13 +60,26 @@ public class BitcoinActualTradeAgent implements Agent {
         }
         logger.debug("Status of trading. Sell: {} Buy: {}", bid, ask);
 
+        populateTickerDAO();
+
+    }
+
+    private void populateTickerDAO() {
         TickerEntity ticker = new TickerEntity();
         ticker.setAsk(ask);
         ticker.setBid(bid);
-
         ticker.setTimestamp(TimeUtil.convertTimestampLocalDateTime(timestamp));
+        ticker.setBuyDiff(ask.subtract(getBuyRatingInfo()));
+        ticker.setSellDiff(bid.subtract(getSellRatingInfo()));
         tickerDAO.addTicker(ticker);
+    }
 
+    private BigDecimal getBuyRatingInfo() {
+        return ratingDAO.getRating().getBuyRating();
+    }
+
+    private BigDecimal getSellRatingInfo() {
+        return ratingDAO.getRating().getSellRating();
     }
 
     public void setBitstamp(BitstampClientImpl bitstamp) {
@@ -73,6 +88,10 @@ public class BitcoinActualTradeAgent implements Agent {
 
     public void setTickerDAO(TickerDAO tickerDAO) {
         this.tickerDAO = tickerDAO;
+    }
+
+    public void setRatingDAO(RatingDAO ratingDAO) {
+        this.ratingDAO = ratingDAO;
     }
 
 }

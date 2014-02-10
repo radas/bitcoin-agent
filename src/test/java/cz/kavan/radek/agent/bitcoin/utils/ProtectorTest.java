@@ -36,10 +36,10 @@ public class ProtectorTest {
      * @throws Exception
      */
     public void generateRealApiKeyAndSecret() throws Exception {
-        String decApiKey = Protector.encryptApiKey("PXSDIOeLxvM");
+        String decApiKey = Protector.encryptApiKey("VNs1SttwZa9ADbim");
         System.out.println(decApiKey);
 
-        String decSecret = Protector.encryptApiKey("6nfUuCxnfbPgiiu7");
+        String decSecret = Protector.encryptApiKey("ONObfP2PonyC2YsR2");
         System.out.println(decSecret);
     }
 

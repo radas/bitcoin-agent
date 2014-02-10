@@ -80,19 +80,19 @@
 	</appender>
 
 
-	<logger name="cz.kavan.radek.agent.bitcoin" level="DEBUG">
+	<logger name="cz.kavan.radek.agent.bitcoin" level="INFO">
 		<appender-ref ref="fileAppender" />
 	</logger>
 
-	<logger name="org.springframework" additivity="false" level="debug">
+	<logger name="org.springframework" additivity="false" level="ERROR">
 		<appender-ref ref="springAppender" />
 	</logger>
 
-	<logger name="org.hibernate" additivity="false" level="DEBUG">
+	<logger name="org.hibernate" additivity="false" level="ERROR">
 		<appender-ref ref="hibernateAppender" />
 	</logger>
 
-	<logger name="org.quartz" additivity="false" level="DEBUG">
+	<logger name="org.quartz" additivity="false" level="ERROR">
 		<appender-ref ref="quartzAppender" />
 	</logger>
 

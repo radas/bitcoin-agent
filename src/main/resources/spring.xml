@@ -4,6 +4,7 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
 	<import resource="classpath:datasource.xml" />
+	<import resource="classpath:bitstamp-auth.xml" />
     <import resource="classpath:bitstamp-web-service.xml" />
 	<import resource="classpath:scheduler.xml" />
 

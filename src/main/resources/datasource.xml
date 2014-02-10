@@ -40,4 +40,6 @@
 	<bean id="balanceDAO" class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.AccountBalanceDAOImpl"></bean>
 	
 	<bean id="apiKeyDAO" class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.ApiKeyDAOImpl"></bean>
+	
+	<bean id="ratingDAO" class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.RatingDAOImpl"></bean>
 </beans>

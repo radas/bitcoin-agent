@@ -23,6 +23,12 @@ public class TickerEntity {
     @Column(name = "buy", nullable = false)
     private BigDecimal ask;
 
+    @Column(name = "sell_diff", nullable = false)
+    private BigDecimal sellDiff;
+
+    @Column(name = "buy_diff", nullable = false)
+    private BigDecimal buyDiff;
+
     @Column(name = "trade_time", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime timestamp;
@@ -58,6 +64,22 @@ public class TickerEntity {
 
     public void setAsk(BigDecimal ask) {
         this.ask = ask;
+    }
+
+    public BigDecimal getSellDiff() {
+        return sellDiff;
+    }
+
+    public void setSellDiff(BigDecimal sellDiff) {
+        this.sellDiff = sellDiff;
+    }
+
+    public BigDecimal getBuyDiff() {
+        return buyDiff;
+    }
+
+    public void setBuyDiff(BigDecimal buyDiff) {
+        this.buyDiff = buyDiff;
     }
 
 }
