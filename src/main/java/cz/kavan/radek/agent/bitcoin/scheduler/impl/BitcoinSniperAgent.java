@@ -20,6 +20,7 @@ public class BitcoinSniperAgent implements Agent {
 
     private BigDecimal btc_available;
     private BigDecimal usd_available;
+    private String errorMessage;
 
     @Override
     public void startAgent() {
@@ -42,13 +43,14 @@ public class BitcoinSniperAgent implements Agent {
         if (accountBalance != null) {
             btc_available = accountBalance.getBtc_available();
             usd_available = accountBalance.getUsd_available();
+            errorMessage = accountBalance.getError();
         }
     }
 
     private void writeAccountInfo() {
         if (btc_available == null || usd_available == null) {
-            logger.error("Can't get account status");
-            throw new IllegalArgumentException("Can't get info about account status");
+            logger.error("Can't get account status: {}", errorMessage);
+            throw new IllegalArgumentException("Can't get info about account status: " + errorMessage);
         }
         logger.debug("Status of account status. BTC: {} USD: {}", btc_available, usd_available);
 

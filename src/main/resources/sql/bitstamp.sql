@@ -14,6 +14,8 @@ CREATE TABLE bitstamp_rating
     created TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+INSERT INTO bitstamp_rating (sell_rating, buy_rating) VALUES (800.00, 800.00);
+
 
 DROP TABLE IF EXISTS bitstamp_ticker;
 
@@ -45,9 +47,9 @@ CREATE TABLE bitstamp_api
 (
     id      BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     api_key   VARCHAR(200),
-    secret   VARCHAR(200)
+    secret   VARCHAR(200),
     client_id INT UNSIGNED
 );
 
-INSERT INTO bitstamp_api (api_key, secret, client_id) VALUES ('api_key', 'secret', '123456');
+INSERT INTO bitstamp_api (api_key, secret, client_id) VALUES ('apit_key', 'secret', 123456);
 

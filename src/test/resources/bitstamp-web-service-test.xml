@@ -5,10 +5,26 @@
         http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
         http://www.mockito.org/spring/mockito https://bitbucket.org/kubek2k/springockito/raw/tip/springockito/src/main/resources/spring/mockito.xsd">
 
+	<bean id="bitstamp"
+		class="cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl">
+		<property name="bitstampUrl" value="http://test" />
+		<property name="bitstampBalanceUrl" value="http://test" />
+		<property name="bitstampAuth" ref="bitstampAuth" />
+		<property name="restTemplate" ref="restTemplate" />
+	</bean>
+
+	<bean id="bitstampAuth" class="cz.kavan.radek.agent.bitcoin.auth.impl.BitstampAuthImpl">
+		<property name="apiKeyGenerator" ref="apiKeyGenerator" />
+	</bean>
+
 	<bean id="apiKeyGenerator" class="cz.kavan.radek.agent.bitcoin.utils.ApiKeyGenerator">
 		<property name="apiKeyDAO" ref="apiKeyDAO" />
 	</bean>
 
 	<mockito:mock id="apiKeyDAO"
 		class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.ApiKeyDAOImpl" />
+
+	<mockito:mock id="restTemplate"
+		class="org.springframework.web.client.RestTemplate" />
+
 </beans>

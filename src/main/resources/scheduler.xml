@@ -37,12 +37,12 @@
 	<!-- Scheduler definitions -->
 	<bean id="bitcoinActualTradeAgentScheduler" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="bitcoinActualTradeAgentJob" />
-		<property name="cronExpression" value="0 */1 * * * ?" />
+		<property name="cronExpression" value="0 */10 * * * ?" />
 	</bean>
 
 	<bean id="bitcoinSniperAgentcheduler" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="bitcoinSniperAgentJob" />
-		<property name="cronExpression" value="0 */1 * * * ?" />
+		<property name="cronExpression" value="0 0 0/1 * * ?" />
 	</bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

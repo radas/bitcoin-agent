@@ -97,7 +97,7 @@
 	</logger>
 
 
-	<root level="DEBUG"> <!-- can set level to OFF -->
+	<root level="OFF"> <!-- can set level to OFF -->
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>
