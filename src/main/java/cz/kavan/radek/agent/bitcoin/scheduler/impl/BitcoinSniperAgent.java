@@ -8,13 +8,11 @@ import cz.kavan.radek.agent.bitcoin.domain.dao.AccountBalanceDAO;
 import cz.kavan.radek.agent.bitcoin.domain.entity.AccountBalanceEntity;
 import cz.kavan.radek.agent.bitcoin.mapper.impl.AccountBalanceMapper;
 import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
-import cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl;
 
-public class BitcoinSniperAgent implements Agent {
+public class BitcoinSniperAgent extends Agent {
 
     private static final Logger logger = LoggerFactory.getLogger(BitcoinSniperAgent.class);
 
-    private BitstampClientImpl bitstamp;
     private AccountBalanceDAO balanceDAO;
 
     AccountBalance accountBalance;
@@ -54,10 +52,6 @@ public class BitcoinSniperAgent implements Agent {
 
         balanceDAO.addAccountBalance(balance);
 
-    }
-
-    public void setBitstamp(BitstampClientImpl bitstamp) {
-        this.bitstamp = bitstamp;
     }
 
     public void setBalanceDAO(AccountBalanceDAO balanceDAO) {

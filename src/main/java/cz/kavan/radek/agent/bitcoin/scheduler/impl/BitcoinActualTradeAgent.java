@@ -1,7 +1,6 @@
 package cz.kavan.radek.agent.bitcoin.scheduler.impl;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,6 @@ import cz.kavan.radek.agent.bitcoin.domain.dao.TickerDAO;
 import cz.kavan.radek.agent.bitcoin.domain.entity.TickerEntity;
 import cz.kavan.radek.agent.bitcoin.mapper.impl.TickerMapper;
 import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
-import cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl;
 
 /**
  * 
@@ -21,11 +19,10 @@ import cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl;
  *         bid | nejvyšší nákupní nabídka - za tohle prodavam ask | Nejnižší
  *         prodejní nabídka - za tohle nakupuji
  */
-public class BitcoinActualTradeAgent implements Agent {
+public class BitcoinActualTradeAgent extends Agent {
 
     private static final Logger logger = LoggerFactory.getLogger(BitcoinActualTradeAgent.class);
 
-    private BitstampClientImpl bitstamp;
     private TickerDAO tickerDAO;
     private RatingDAO ratingDAO;
 
@@ -42,7 +39,7 @@ public class BitcoinActualTradeAgent implements Agent {
 
     }
 
-    private void populateTradeInfo() throws ParseException {
+    private void populateTradeInfo() {
         initBidAskValues();
         writeTradeInfo();
     }
@@ -56,7 +53,7 @@ public class BitcoinActualTradeAgent implements Agent {
         }
     }
 
-    private void writeTradeInfo() throws ParseException {
+    private void writeTradeInfo() {
         if (ticker.getBid() == null || ticker.getAsk() == null) {
             logger.error("Can't get info about trade.");
             throw new IllegalArgumentException("Can't get info about trade.");
@@ -79,10 +76,6 @@ public class BitcoinActualTradeAgent implements Agent {
 
     private BigDecimal getSellRatingInfo() {
         return ratingDAO.getRating().getSellRating();
-    }
-
-    public void setBitstamp(BitstampClientImpl bitstamp) {
-        this.bitstamp = bitstamp;
     }
 
     public void setTickerDAO(TickerDAO tickerDAO) {
