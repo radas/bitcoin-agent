@@ -20,6 +20,21 @@ public class AccountBalanceEntity {
     @Column(name = "usd_available", nullable = false)
     private BigDecimal usd_available;
 
+    @Column(name = "usd_balance", nullable = false)
+    private BigDecimal usdBalance;
+
+    @Column(name = "btc_balance", nullable = false)
+    private BigDecimal btcBalance;
+
+    @Column(name = "usd_reserved", nullable = false)
+    private BigDecimal usdReserved;
+
+    @Column(name = "btc_reserved", nullable = false)
+    private BigDecimal btcReserved;
+
+    @Column(name = "fee", nullable = false)
+    private BigDecimal fee;
+
     @Id
     @GeneratedValue(strategy = AUTO)
     @Column
@@ -43,6 +58,46 @@ public class AccountBalanceEntity {
 
     public void setUsd_available(BigDecimal usd_available) {
         this.usd_available = usd_available;
+    }
+
+    public BigDecimal getUsdBalance() {
+        return usdBalance;
+    }
+
+    public void setUsdBalance(BigDecimal usdBalance) {
+        this.usdBalance = usdBalance;
+    }
+
+    public BigDecimal getBtcBalance() {
+        return btcBalance;
+    }
+
+    public void setBtcBalance(BigDecimal btcBalance) {
+        this.btcBalance = btcBalance;
+    }
+
+    public BigDecimal getUsdReserved() {
+        return usdReserved;
+    }
+
+    public void setUsdReserved(BigDecimal usdReserved) {
+        this.usdReserved = usdReserved;
+    }
+
+    public BigDecimal getBtcReserved() {
+        return btcReserved;
+    }
+
+    public void setBtcReserved(BigDecimal btcReserved) {
+        this.btcReserved = btcReserved;
+    }
+
+    public BigDecimal getFee() {
+        return fee;
+    }
+
+    public void setFee(BigDecimal fee) {
+        this.fee = fee;
     }
 
 }

@@ -54,10 +54,20 @@ public class AccountBalanceEntityIT {
 
         balance.setBtc_available(new BigDecimal("1.0"));
         balance.setUsd_available(new BigDecimal("50.0"));
+        balance.setBtcBalance(new BigDecimal("2.0"));
+        balance.setBtcReserved(new BigDecimal("3.0"));
+        balance.setFee(new BigDecimal("4.0"));
+        balance.setUsdBalance(new BigDecimal("5.0"));
+        balance.setUsdReserved(new BigDecimal("6.0"));
         balanceDAO.addAccountBalance(balance);
 
         assertEquals(1, balanceDAO.getBalance().size());
         assertEquals(new BigDecimal("1.0"), balanceDAO.getBalance().get(0).getBtc_available());
         assertEquals(new BigDecimal("50.0"), balanceDAO.getBalance().get(0).getUsd_available());
+        assertEquals(new BigDecimal("2.0"), balanceDAO.getBalance().get(0).getBtcBalance());
+        assertEquals(new BigDecimal("3.0"), balanceDAO.getBalance().get(0).getBtcReserved());
+        assertEquals(new BigDecimal("4.0"), balanceDAO.getBalance().get(0).getFee());
+        assertEquals(new BigDecimal("5.0"), balanceDAO.getBalance().get(0).getUsdBalance());
+        assertEquals(new BigDecimal("6.0"), balanceDAO.getBalance().get(0).getUsdReserved());
     }
 }

@@ -10,10 +10,17 @@ import cz.kavan.radek.agent.bitcoin.domain.Ticker;
 import cz.kavan.radek.agent.bitcoin.domain.dao.RatingDAO;
 import cz.kavan.radek.agent.bitcoin.domain.dao.TickerDAO;
 import cz.kavan.radek.agent.bitcoin.domain.entity.TickerEntity;
+import cz.kavan.radek.agent.bitcoin.mapper.impl.TickerMapper;
 import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
 import cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl;
-import cz.kavan.radek.agent.bitcoin.utils.TimeUtil;
 
+/**
+ * 
+ * @author radek
+ * 
+ *         bid | nejvyšší nákupní nabídka - za tohle prodavam ask | Nejnižší
+ *         prodejní nabídka - za tohle nakupuji
+ */
 public class BitcoinActualTradeAgent implements Agent {
 
     private static final Logger logger = LoggerFactory.getLogger(BitcoinActualTradeAgent.class);
@@ -22,9 +29,7 @@ public class BitcoinActualTradeAgent implements Agent {
     private TickerDAO tickerDAO;
     private RatingDAO ratingDAO;
 
-    private BigDecimal bid; // nejvyšší nákupní nabídka - za tohle prodavam
-    private BigDecimal ask; // Nejnižší prodejní nabídka - za tohle nakupuji
-    private long timestamp;
+    private TickerEntity ticker;
 
     @Override
     public void startAgent() {
@@ -46,31 +51,25 @@ public class BitcoinActualTradeAgent implements Agent {
         Ticker bitstampMarket = bitstamp.getActualMarket();
 
         if (bitstampMarket != null) {
-
-            bid = bitstampMarket.getBid();
-            ask = bitstampMarket.getAsk();
-            timestamp = bitstampMarket.getTimestamp();
+            ticker = new TickerEntity();
+            TickerMapper.mapTickerResponse(bitstampMarket, ticker);
         }
     }
 
     private void writeTradeInfo() throws ParseException {
-        if (bid == null || ask == null) {
+        if (ticker.getBid() == null || ticker.getAsk() == null) {
             logger.error("Can't get info about trade.");
             throw new IllegalArgumentException("Can't get info about trade.");
         }
-        logger.debug("Status of trading. Sell: {} Buy: {}", bid, ask);
+        logger.debug("Status of trading. Sell: {} Buy: {}", ticker.getBid(), ticker.getAsk());
 
         populateTickerDAO();
 
     }
 
     private void populateTickerDAO() {
-        TickerEntity ticker = new TickerEntity();
-        ticker.setAsk(ask);
-        ticker.setBid(bid);
-        ticker.setTimestamp(TimeUtil.convertTimestampLocalDateTime(timestamp));
-        ticker.setBuyDiff(ask.subtract(getBuyRatingInfo()));
-        ticker.setSellDiff(bid.subtract(getSellRatingInfo()));
+        ticker.setBuyDiff(ticker.getAsk().subtract(getBuyRatingInfo()));
+        ticker.setSellDiff(ticker.getBid().subtract(getSellRatingInfo()));
         tickerDAO.addTicker(ticker);
     }
 

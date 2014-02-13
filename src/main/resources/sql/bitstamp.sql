@@ -37,6 +37,11 @@ CREATE TABLE bitstamp_balance
     id      BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     btc_available   DECIMAL(10,2),
     usd_available   DECIMAL(10,2),
+    usd_balance DECIMAL(10,2),
+    btc_balance DECIMAL(10,2),
+    usd_reserved DECIMAL(10,2),
+    btc_reserved DECIMAL(10,2),
+    fee DECIMAL(10,2),
     created TIMESTAMP NOT NULL DEFAULT NOW()
 );
 

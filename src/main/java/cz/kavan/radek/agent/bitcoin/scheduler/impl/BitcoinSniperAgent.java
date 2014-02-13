@@ -1,13 +1,12 @@
 package cz.kavan.radek.agent.bitcoin.scheduler.impl;
 
-import java.math.BigDecimal;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cz.kavan.radek.agent.bitcoin.domain.AccountBalance;
 import cz.kavan.radek.agent.bitcoin.domain.dao.AccountBalanceDAO;
 import cz.kavan.radek.agent.bitcoin.domain.entity.AccountBalanceEntity;
+import cz.kavan.radek.agent.bitcoin.mapper.impl.AccountBalanceMapper;
 import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
 import cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl;
 
@@ -18,9 +17,8 @@ public class BitcoinSniperAgent implements Agent {
     private BitstampClientImpl bitstamp;
     private AccountBalanceDAO balanceDAO;
 
-    private BigDecimal btc_available;
-    private BigDecimal usd_available;
-    private String errorMessage;
+    AccountBalance accountBalance;
+    AccountBalanceEntity balance;
 
     @Override
     public void startAgent() {
@@ -41,22 +39,18 @@ public class BitcoinSniperAgent implements Agent {
         AccountBalance accountBalance = bitstamp.getAccountBalance().getBody();
 
         if (accountBalance != null) {
-            btc_available = accountBalance.getBtc_available();
-            usd_available = accountBalance.getUsd_available();
-            errorMessage = accountBalance.getError();
+            balance = new AccountBalanceEntity();
+            AccountBalanceMapper.mapAccountBalanceResponse(accountBalance, balance);
         }
     }
 
     private void writeAccountInfo() {
-        if (btc_available == null || usd_available == null) {
-            logger.error("Can't get account status: {}", errorMessage);
-            throw new IllegalArgumentException("Can't get info about account status: " + errorMessage);
+        if (balance.getBtc_available() == null || balance.getUsd_available() == null) {
+            logger.error("Can't get account status: {}", accountBalance.getError());
+            throw new IllegalArgumentException("Can't get info about account status: " + accountBalance.getError());
         }
-        logger.debug("Status of account status. BTC: {} USD: {}", btc_available, usd_available);
-
-        AccountBalanceEntity balance = new AccountBalanceEntity();
-        balance.setBtc_available(btc_available);
-        balance.setUsd_available(usd_available);
+        logger.debug("Status of account status. BTC: {} USD: {}", balance.getBtc_available(),
+                balance.getUsd_available());
 
         balanceDAO.addAccountBalance(balance);
 
