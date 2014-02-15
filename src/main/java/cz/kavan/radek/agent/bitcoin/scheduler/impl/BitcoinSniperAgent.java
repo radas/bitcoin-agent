@@ -1,6 +1,7 @@
 package cz.kavan.radek.agent.bitcoin.scheduler.impl;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,26 +63,38 @@ public class BitcoinSniperAgent extends Agent {
         logger.info("I'm trying to shot on the market!");
         if (isSellable()) {
             logger.info("Ok, I can sell {} BTC", balance.getBtc_available());
-            logger.info("I can sell BTC when actual buy is bigger then: {}", getBuyRatingInfo());
+            logger.info("I can sell BTC when actual buy is bigger then: {}", getRatingInfo());
             logger.info("Bigger then: {}", limitForSellingBtc());
         } else {
             logger.info("Ok, I can buy BTC with price {} USD", balance.getUsd_available());
-            logger.info("I can buy when actual sell is lower then: {}", getSellRatingInfo());
+            logger.info("I can buy when actual sell is lower then: {}", getRatingInfo());
             logger.info("Lower then: {}", limitForBuyingBtc());
         }
 
     }
 
     boolean isSellable() {
-        return (balance.getBtc_available().compareTo(balance.getUsd_available())) == 1;
+        return ((balance.getBtc_available().multiply(getRatingInfo())).compareTo(balance.getUsd_available())) == 1;
     }
 
     BigDecimal limitForSellingBtc() {
-        return getBuyRatingInfo().add(moneyGain).add(balance.getFee());
+        BigDecimal needRateWithGain = getRatingInfo().add(moneyGain);
+        BigDecimal fee = (((needRateWithGain).multiply(balance.getBtc_available())).divide(new BigDecimal(100)))
+                .multiply(balance.getFee());
+        return needRateWithGain.add(fee);
     }
 
     BigDecimal limitForBuyingBtc() {
-        return getBuyRatingInfo().subtract(moneyGain).subtract(balance.getFee());
+        BigDecimal needRateWithGain = getRatingInfo().subtract(moneyGain);
+        BigDecimal howManyBitcoinsCanIBuy = obtainBTCpossibleToBuy(needRateWithGain);
+
+        BigDecimal fee = (((needRateWithGain).multiply(howManyBitcoinsCanIBuy)).divide(new BigDecimal(100)))
+                .multiply(balance.getFee());
+        return needRateWithGain.subtract(fee);
+    }
+
+    BigDecimal obtainBTCpossibleToBuy(BigDecimal needRateWithGain) {
+        return balance.getUsd_available().divide(needRateWithGain, 2, RoundingMode.FLOOR);
     }
 
     public void setBalanceDAO(AccountBalanceDAO balanceDAO) {

@@ -9,8 +9,7 @@ DROP TABLE IF EXISTS bitstamp_rating;
 CREATE TABLE bitstamp_rating
 (
     id      BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    sell_rating        DECIMAL(10,2),
-    buy_rating         DECIMAL(10,2),
+    rating       DECIMAL(10,2),
     created TIMESTAMP NOT NULL DEFAULT NOW()
 );
 

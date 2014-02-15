@@ -1,5 +1,7 @@
 package cz.kavan.radek.agent.bitcoin.domain.dao.impl;
 
+import java.math.BigDecimal;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,7 +25,9 @@ public class RatingDAOImpl implements RatingDAO {
 
     @Override
     @Transactional
-    public RatingEntity getRating() {
-        return (RatingEntity) sessionFactory.getCurrentSession().createCriteria(RatingEntity.class).list().get(0);
+    public BigDecimal getRating() {
+        RatingEntity rating = (RatingEntity) sessionFactory.getCurrentSession().createCriteria(RatingEntity.class)
+                .list().get(0);
+        return rating.getRating();
     }
 }

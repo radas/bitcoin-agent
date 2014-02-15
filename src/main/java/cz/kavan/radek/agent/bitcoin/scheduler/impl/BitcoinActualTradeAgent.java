@@ -61,8 +61,8 @@ public class BitcoinActualTradeAgent extends Agent {
     }
 
     private void populateTickerDAO() {
-        ticker.setBuyDiff(ticker.getAsk().subtract(getBuyRatingInfo()));
-        ticker.setSellDiff(ticker.getBid().subtract(getSellRatingInfo()));
+        ticker.setBuyDiff(ticker.getAsk().subtract(getRatingInfo()));
+        ticker.setSellDiff(ticker.getBid().subtract(getRatingInfo()));
         tickerDAO.addTicker(ticker);
     }
 

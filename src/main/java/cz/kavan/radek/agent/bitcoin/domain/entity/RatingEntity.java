@@ -14,11 +14,8 @@ import javax.persistence.Table;
 @Table(name = "bitstamp_rating")
 public class RatingEntity {
 
-    @Column(name = "sell_rating", nullable = false)
-    private BigDecimal sellRating;
-
-    @Column(name = "buy_rating", nullable = false)
-    private BigDecimal buyRating;
+    @Column(name = "rating", nullable = false)
+    private BigDecimal rating;
 
     @Id
     @GeneratedValue(strategy = AUTO)
@@ -29,20 +26,12 @@ public class RatingEntity {
         super();
     }
 
-    public BigDecimal getSellRating() {
-        return sellRating;
+    public BigDecimal getRating() {
+        return rating;
     }
 
-    public void setSellRating(BigDecimal sellRating) {
-        this.sellRating = sellRating;
-    }
-
-    public BigDecimal getBuyRating() {
-        return buyRating;
-    }
-
-    public void setBuyRating(BigDecimal buyRating) {
-        this.buyRating = buyRating;
+    public void setRating(BigDecimal rating) {
+        this.rating = rating;
     }
 
 }

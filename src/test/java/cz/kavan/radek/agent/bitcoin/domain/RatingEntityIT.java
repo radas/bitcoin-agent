@@ -43,12 +43,10 @@ public class RatingEntityIT {
     @Test
     public void shouldBeAbleToPersistAnObject() throws ParseException {
 
-        rating.setBuyRating(new BigDecimal("800.0"));
-        rating.setSellRating(new BigDecimal("900.0"));
+        rating.setRating(new BigDecimal("800.0"));
 
         ratingDAO.addRating(rating);
 
-        assertEquals(new BigDecimal("800.0"), ratingDAO.getRating().getBuyRating());
-        assertEquals(new BigDecimal("900.0"), ratingDAO.getRating().getSellRating());
+        assertEquals(new BigDecimal("800.0"), ratingDAO.getRating());
     }
 }

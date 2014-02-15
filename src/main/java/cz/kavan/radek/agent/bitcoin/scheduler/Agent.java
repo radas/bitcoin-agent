@@ -12,12 +12,8 @@ public abstract class Agent {
 
     public abstract void startAgent();
 
-    protected BigDecimal getBuyRatingInfo() {
-        return ratingDAO.getRating().getBuyRating();
-    }
-
-    protected BigDecimal getSellRatingInfo() {
-        return ratingDAO.getRating().getSellRating();
+    protected BigDecimal getRatingInfo() {
+        return ratingDAO.getRating();
     }
 
     public void setBitstamp(BitstampClientImpl bitstamp) {
