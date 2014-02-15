@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kubek2k.springockito.annotations.SpringockitoContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -16,13 +17,14 @@ import cz.kavan.radek.agent.bitcoin.domain.entity.ApiKeyEntity;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = SpringockitoContextLoader.class, locations = { "classpath:/bitstamp-web-service-test.xml" })
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class ApiKeyGeneratorTest {
 
     @Autowired
-    private ApiKeyGenerator apiKeyGenerator;
+    private ApiKeyDAO apiKeyDAO;
 
     @Autowired
-    private ApiKeyDAO apiKeyDAO;
+    private ApiKeyGenerator apiKeyGenerator;
 
     @Before
     public void setUp() throws Exception {

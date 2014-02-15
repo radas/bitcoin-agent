@@ -1,12 +1,9 @@
 package cz.kavan.radek.agent.bitcoin.scheduler.impl;
 
-import java.math.BigDecimal;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cz.kavan.radek.agent.bitcoin.domain.Ticker;
-import cz.kavan.radek.agent.bitcoin.domain.dao.RatingDAO;
 import cz.kavan.radek.agent.bitcoin.domain.dao.TickerDAO;
 import cz.kavan.radek.agent.bitcoin.domain.entity.TickerEntity;
 import cz.kavan.radek.agent.bitcoin.mapper.impl.TickerMapper;
@@ -24,7 +21,6 @@ public class BitcoinActualTradeAgent extends Agent {
     private static final Logger logger = LoggerFactory.getLogger(BitcoinActualTradeAgent.class);
 
     private TickerDAO tickerDAO;
-    private RatingDAO ratingDAO;
 
     private TickerEntity ticker;
 
@@ -70,20 +66,8 @@ public class BitcoinActualTradeAgent extends Agent {
         tickerDAO.addTicker(ticker);
     }
 
-    private BigDecimal getBuyRatingInfo() {
-        return ratingDAO.getRating().getBuyRating();
-    }
-
-    private BigDecimal getSellRatingInfo() {
-        return ratingDAO.getRating().getSellRating();
-    }
-
     public void setTickerDAO(TickerDAO tickerDAO) {
         this.tickerDAO = tickerDAO;
-    }
-
-    public void setRatingDAO(RatingDAO ratingDAO) {
-        this.ratingDAO = ratingDAO;
     }
 
 }

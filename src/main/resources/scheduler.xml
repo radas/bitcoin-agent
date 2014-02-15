@@ -8,17 +8,18 @@
 	<!-- Agents definitions -->
 	<bean id="agent" class="cz.kavan.radek.agent.bitcoin.scheduler.Agent" abstract="true">
         <property name="bitstamp" ref="bitstamp" />
+        <property name="ratingDAO" ref="ratingDAO" />
     </bean>
 	
 	<bean id="bitcoinActualTradeAgent" parent ="agent"
 		class="cz.kavan.radek.agent.bitcoin.scheduler.impl.BitcoinActualTradeAgent">
 		<property name="tickerDAO" ref="tickerDAO" />
-		<property name="ratingDAO" ref="ratingDAO" />
 	</bean>
 
 	<bean id="bitcoinSniperAgent" parent ="agent"
 		class="cz.kavan.radek.agent.bitcoin.scheduler.impl.BitcoinSniperAgent">
 		<property name="balanceDAO" ref="balanceDAO" />
+		<property name="moneyGain" value="${money.gain}" />
 	</bean>
 
 
