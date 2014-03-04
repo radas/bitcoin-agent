@@ -10,4 +10,6 @@ public interface TickerDAO {
 
     List<TickerEntity> getTickers();
 
+    List<TickerEntity> getLastTickers();
+
 }

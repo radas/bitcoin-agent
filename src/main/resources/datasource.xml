@@ -29,7 +29,6 @@
 		</property>
 	</bean>
 
-	<tx:annotation-driven />
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -42,4 +41,6 @@
 	<bean id="apiKeyDAO" class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.ApiKeyDAOImpl"></bean>
 	
 	<bean id="ratingDAO" class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.RatingDAOImpl"></bean>
+	
+	<bean id="emaDAO" class="cz.kavan.radek.agent.bitcoin.domain.dao.impl.EmaDAOImpl"></bean>
 </beans>

@@ -3,6 +3,7 @@ package cz.kavan.radek.agent.bitcoin.domain.dao.impl;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,4 +31,11 @@ public class TickerDAOImpl implements TickerDAO {
         return sessionFactory.getCurrentSession().createQuery("from TickerEntity").list();
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    @Transactional
+    public List<TickerEntity> getLastTickers() {
+        return sessionFactory.getCurrentSession().createCriteria(TickerEntity.class).addOrder(Order.desc("id"))
+                .setMaxResults(6).list();
+    }
 }

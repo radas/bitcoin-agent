@@ -11,6 +11,7 @@ public class Ticker {
     private BigDecimal last;
     private BigDecimal volume;
     private BigDecimal low;
+    private BigDecimal vwap;
 
     public Ticker() {
         super();
@@ -70,6 +71,14 @@ public class Ticker {
 
     public void setAsk(BigDecimal ask) {
         this.ask = ask;
+    }
+
+    public BigDecimal getVwap() {
+        return vwap;
+    }
+
+    public void setVwap(BigDecimal vwap) {
+        this.vwap = vwap;
     }
 
 }

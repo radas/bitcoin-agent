@@ -4,6 +4,17 @@ GRANT ALL PRIVILEGES ON bitcoin_agent.* TO 'bitagent'@'127.0.0.1' IDENTIFIED BY 
 
 use bitcoin_agent;
 
+DROP TABLE IF EXISTS bitstamp_ema;
+
+CREATE TABLE bitstamp_ema
+(
+    id      BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    ema_sell       DECIMAL(10,2),
+    ema_buy        DECIMAL(10,2),
+    created TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+
 DROP TABLE IF EXISTS bitstamp_rating;
 
 CREATE TABLE bitstamp_rating

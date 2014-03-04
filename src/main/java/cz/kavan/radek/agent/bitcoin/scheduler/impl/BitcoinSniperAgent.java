@@ -8,9 +8,12 @@ import org.slf4j.LoggerFactory;
 
 import cz.kavan.radek.agent.bitcoin.domain.AccountBalance;
 import cz.kavan.radek.agent.bitcoin.domain.dao.AccountBalanceDAO;
+import cz.kavan.radek.agent.bitcoin.domain.dao.EmaDAO;
 import cz.kavan.radek.agent.bitcoin.domain.entity.AccountBalanceEntity;
+import cz.kavan.radek.agent.bitcoin.domain.entity.EmaEntity;
 import cz.kavan.radek.agent.bitcoin.mapper.impl.AccountBalanceMapper;
 import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
+import cz.kavan.radek.agent.bitcoin.strategy.EmaStrategy;
 
 public class BitcoinSniperAgent extends Agent {
 
@@ -19,8 +22,14 @@ public class BitcoinSniperAgent extends Agent {
     private AccountBalanceDAO balanceDAO;
     private BigDecimal moneyGain;
 
-    AccountBalance accountBalance;
-    AccountBalanceEntity balance;
+    private AccountBalance accountBalance;
+    private AccountBalanceEntity balance;
+
+    private EmaEntity ema;
+    private EmaDAO emaDao;
+
+    private BigDecimal lastAsk;
+    private BigDecimal lastBid;
 
     @Override
     public void startAgent() {
@@ -33,13 +42,21 @@ public class BitcoinSniperAgent extends Agent {
     }
 
     private void populateTradeSniper() {
-        initAccountBalance();
+        initBitstampValues();
         writeAccountInfo();
         shotBySniper();
     }
 
-    private void initAccountBalance() {
+    private void initBitstampValues() {
         AccountBalance accountBalance = bitstamp.getAccountBalance().getBody();
+
+        if (bitstamp == null) {
+            throw new IllegalArgumentException("Bitstamp market info is not available");
+
+        } else {
+            lastAsk = bitstamp.getActualMarket().getAsk();
+            lastBid = bitstamp.getActualMarket().getBid();
+        }
 
         if (accountBalance != null) {
             balance = new AccountBalanceEntity();
@@ -61,12 +78,15 @@ public class BitcoinSniperAgent extends Agent {
 
     private void shotBySniper() {
         logger.info("I'm trying to shot on the market!");
+
         if (isSellable()) {
             logger.info("Ok, I can sell {} BTC", balance.getBtc_available());
+
             logger.info("I can sell BTC when actual buy is bigger then: {}", getRatingInfo());
             logger.info("Bigger then: {}", limitForSellingBtc());
         } else {
             logger.info("Ok, I can buy BTC with price {} USD", balance.getUsd_available());
+
             logger.info("I can buy when actual sell is lower then: {}", getRatingInfo());
             logger.info("Lower then: {}", limitForBuyingBtc());
         }
@@ -74,6 +94,33 @@ public class BitcoinSniperAgent extends Agent {
     }
 
     boolean isSellable() {
+        int hasMinimalAvailableBTC = balance.getBtc_available().compareTo(new BigDecimal("0.05"));
+        int hasMinimalAvailableUSD = balance.getUsd_available().compareTo(new BigDecimal("10.00"));
+
+        if ((hasMinimalAvailableBTC == -1) && (hasMinimalAvailableUSD == -1)) {
+            logger.info("No BTC or Money = no funny");
+
+            BigDecimal emaSell = EmaStrategy.computeEmaIndex(true, tickerDAO.getLastTickers(), emaDao.getEma()
+                    .getEmaSell());
+
+            BigDecimal emaBuy = EmaStrategy.computeEmaIndex(false, tickerDAO.getLastTickers(), emaDao.getEma()
+                    .getEmaBuy());
+
+            logger.info("I'm trying to get and save new EMA!");
+            logger.info("Last sell EMA is {}", emaDao.getEma().getEmaSell());
+            logger.info("New last sell EMA is {}", emaSell);
+
+            logger.info("Last buy EMA is {}", emaDao.getEma().getEmaBuy());
+            logger.info("New last buy EMA is {}", emaBuy);
+
+            ema = new EmaEntity();
+            ema.setEmaSell(emaSell);
+            ema.setEmaBuy(emaBuy);
+
+            emaDao.addEma(ema);
+
+            throw new IllegalArgumentException("No BTC or Money = no funny");
+        }
         return ((balance.getBtc_available().multiply(getRatingInfo())).compareTo(balance.getUsd_available())) == 1;
     }
 
@@ -103,6 +150,10 @@ public class BitcoinSniperAgent extends Agent {
 
     public void setMoneyGain(BigDecimal moneyGain) {
         this.moneyGain = moneyGain;
+    }
+
+    public void setEmaDao(EmaDAO emaDao) {
+        this.emaDao = emaDao;
     }
 
 }

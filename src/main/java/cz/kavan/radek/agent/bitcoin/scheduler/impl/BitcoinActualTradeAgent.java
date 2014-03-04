@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cz.kavan.radek.agent.bitcoin.domain.Ticker;
-import cz.kavan.radek.agent.bitcoin.domain.dao.TickerDAO;
 import cz.kavan.radek.agent.bitcoin.domain.entity.TickerEntity;
 import cz.kavan.radek.agent.bitcoin.mapper.impl.TickerMapper;
 import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
@@ -19,8 +18,6 @@ import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
 public class BitcoinActualTradeAgent extends Agent {
 
     private static final Logger logger = LoggerFactory.getLogger(BitcoinActualTradeAgent.class);
-
-    private TickerDAO tickerDAO;
 
     private TickerEntity ticker;
 
@@ -64,10 +61,6 @@ public class BitcoinActualTradeAgent extends Agent {
         ticker.setBuyDiff(ticker.getAsk().subtract(getRatingInfo()));
         ticker.setSellDiff(ticker.getBid().subtract(getRatingInfo()));
         tickerDAO.addTicker(ticker);
-    }
-
-    public void setTickerDAO(TickerDAO tickerDAO) {
-        this.tickerDAO = tickerDAO;
     }
 
 }

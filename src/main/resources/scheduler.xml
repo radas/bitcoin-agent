@@ -9,16 +9,17 @@
 	<bean id="agent" class="cz.kavan.radek.agent.bitcoin.scheduler.Agent" abstract="true">
         <property name="bitstamp" ref="bitstamp" />
         <property name="ratingDAO" ref="ratingDAO" />
+        <property name="tickerDAO" ref="tickerDAO" />
     </bean>
 	
 	<bean id="bitcoinActualTradeAgent" parent ="agent"
 		class="cz.kavan.radek.agent.bitcoin.scheduler.impl.BitcoinActualTradeAgent">
-		<property name="tickerDAO" ref="tickerDAO" />
 	</bean>
 
 	<bean id="bitcoinSniperAgent" parent ="agent"
 		class="cz.kavan.radek.agent.bitcoin.scheduler.impl.BitcoinSniperAgent">
 		<property name="balanceDAO" ref="balanceDAO" />
+		<property name="emaDao" ref="emaDAO" />
 		<property name="moneyGain" value="${money.gain}" />
 	</bean>
 
@@ -45,7 +46,7 @@
 
 	<bean id="bitcoinSniperAgentcheduler" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="bitcoinSniperAgentJob" />
-		<property name="cronExpression" value="0 0 0/1 * * ?" />
+		<property name="cronExpression" value="30 1 0/1 * * ?" />
 	</bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
