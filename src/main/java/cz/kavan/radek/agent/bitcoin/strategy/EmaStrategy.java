@@ -8,8 +8,10 @@ import cz.kavan.radek.agent.bitcoin.domain.entity.TickerEntity;
 
 public class EmaStrategy {
 
-    private static final double ACTUAL_INDEX = 0.28571;
-    private static final double PREVIOUS_INDEX = 0.71429;
+    // http://www.iexplain.org/ema-how-to-calculate/
+    // http://www.forextradingzone.org/fx-EMA
+    static final double ACTUAL_INDEX = 0.28571;
+    static final double PREVIOUS_INDEX = 0.71429;
 
     public static BigDecimal computeEmaIndex(boolean sell, List<TickerEntity> lastPrices, BigDecimal previousEma) {
 
