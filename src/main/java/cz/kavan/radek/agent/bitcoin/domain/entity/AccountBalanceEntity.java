@@ -15,10 +15,10 @@ import javax.persistence.Table;
 public class AccountBalanceEntity {
 
     @Column(name = "btc_available", nullable = false)
-    private BigDecimal btc_available;
+    private BigDecimal btcAvailable;
 
     @Column(name = "usd_available", nullable = false)
-    private BigDecimal usd_available;
+    private BigDecimal usdAvailable;
 
     @Column(name = "usd_balance", nullable = false)
     private BigDecimal usdBalance;
@@ -44,20 +44,20 @@ public class AccountBalanceEntity {
         super();
     }
 
-    public BigDecimal getBtc_available() {
-        return btc_available;
+    public BigDecimal getBtcAvailable() {
+        return btcAvailable;
     }
 
-    public void setBtc_available(BigDecimal btc_available) {
-        this.btc_available = btc_available;
+    public void setBtcAvailable(BigDecimal btcAvailable) {
+        this.btcAvailable = btcAvailable;
     }
 
-    public BigDecimal getUsd_available() {
-        return usd_available;
+    public BigDecimal getUsdAvailable() {
+        return usdAvailable;
     }
 
-    public void setUsd_available(BigDecimal usd_available) {
-        this.usd_available = usd_available;
+    public void setUsdAvailable(BigDecimal usdAvailable) {
+        this.usdAvailable = usdAvailable;
     }
 
     public BigDecimal getUsdBalance() {

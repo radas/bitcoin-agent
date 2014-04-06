@@ -13,6 +13,9 @@ public class EmaStrategy {
     static final double ACTUAL_INDEX = 0.28571;
     static final double PREVIOUS_INDEX = 0.71429;
 
+    private EmaStrategy() {
+    }
+
     public static BigDecimal computeEmaIndex(boolean sell, List<TickerEntity> lastPrices, BigDecimal previousEma) {
 
         BigDecimal actualPrices = countAvg(sell, lastPrices);
@@ -30,10 +33,10 @@ public class EmaStrategy {
         for (TickerEntity tickerEntity : lastPrices) {
 
             if (sell) {
-                bg += tickerEntity.getAsk().intValue();
+                bg += tickerEntity.getBid().intValue();
 
             } else {
-                bg += tickerEntity.getBid().intValue();
+                bg += tickerEntity.getAsk().intValue();
             }
 
         }

@@ -9,6 +9,9 @@ public class AppStart {
 
     private static final Logger logger = LoggerFactory.getLogger(AppStart.class);
 
+    private AppStart() {
+    }
+
     public static void main(String[] args) {
         logger.info("Starting application!");
 

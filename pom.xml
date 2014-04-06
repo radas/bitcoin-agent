@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cz.kavan.radek</groupId>
 	<artifactId>bitcoin-agent</artifactId>
-	<version>0.1</version>
+	<version>1.0</version>
 	<name>Bitcoin Trade Agent</name>
 
 	<properties>
@@ -12,7 +12,7 @@
 		<slf4j.version>1.6.4</slf4j.version>
 		<logback.version>1.0.1</logback.version>
 		<spring.version>3.2.3.RELEASE</spring.version>
-		<jackson.version>1.9.7</jackson.version>
+		<jackson2.version>2.0.2</jackson2.version>
 		<hibernate.version>4.0.1.Final</hibernate.version>
 	</properties>
 
@@ -95,13 +95,19 @@
 			<version>1.8.6</version>
 		</dependency>
 
+		<!-- JACKSON dependencies -->
 		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${jackson.version}</version>
-			<scope>compile</scope>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson2.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson2.version}</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
@@ -155,13 +161,13 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.8.4</version>
-            <scope>test</scope>
-        </dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.8.4</version>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.kubek2k</groupId>
@@ -196,15 +202,15 @@
 			<artifactId>usertype.core</artifactId>
 			<version>3.0.0.CR1</version>
 		</dependency>
-        <!-- Ascpect dependencies -->
-        <dependency>
-          <groupId>org.aspectj</groupId>
-          <artifactId>aspectjrt</artifactId>
-          <version>1.7.4</version>
-        </dependency>
-        
+	
+		<!-- Ascpect dependencies -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.7.4</version>
+		</dependency>
+
 	</dependencies>
-    
 
 	<build>
 		<finalName>bitcoin-agent</finalName>
@@ -276,7 +282,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.13</version>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>

@@ -15,15 +15,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cz.kavan.radek.agent.bitcoin.domain.Ticker;
+import cz.kavan.radek.agent.bitcoin.service.MarketClient;
 import cz.kavan.radek.test.annotation.IntegrationTest;
 
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/bitstamp-web-service-IT.xml" })
+@ContextConfiguration(locations = { "classpath:/bitstamp-services-IT.xml" })
 public class BitstampClientImplIT {
 
     @Autowired
-    private BitstampClientImpl bitstamp;
+    private MarketClient bitstamp;
 
     private Ticker ticker;
 

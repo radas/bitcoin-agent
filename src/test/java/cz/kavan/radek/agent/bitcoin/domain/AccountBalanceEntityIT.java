@@ -22,7 +22,7 @@ import cz.kavan.radek.test.annotation.IntegrationTest;
 
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/bitstamp-web-service-IT.xml" })
+@ContextConfiguration(locations = { "classpath:/bitstamp-services-IT.xml" })
 @Transactional
 public class AccountBalanceEntityIT {
 
@@ -52,8 +52,8 @@ public class AccountBalanceEntityIT {
 
         assertEquals(0, balanceDAO.getBalance().size());
 
-        balance.setBtc_available(new BigDecimal("1.0"));
-        balance.setUsd_available(new BigDecimal("50.0"));
+        balance.setBtcAvailable(new BigDecimal("1.0"));
+        balance.setUsdAvailable(new BigDecimal("50.0"));
         balance.setBtcBalance(new BigDecimal("2.0"));
         balance.setBtcReserved(new BigDecimal("3.0"));
         balance.setFee(new BigDecimal("4.0"));
@@ -62,8 +62,8 @@ public class AccountBalanceEntityIT {
         balanceDAO.addAccountBalance(balance);
 
         assertEquals(1, balanceDAO.getBalance().size());
-        assertEquals(new BigDecimal("1.0"), balanceDAO.getBalance().get(0).getBtc_available());
-        assertEquals(new BigDecimal("50.0"), balanceDAO.getBalance().get(0).getUsd_available());
+        assertEquals(new BigDecimal("1.0"), balanceDAO.getBalance().get(0).getBtcAvailable());
+        assertEquals(new BigDecimal("50.0"), balanceDAO.getBalance().get(0).getUsdAvailable());
         assertEquals(new BigDecimal("2.0"), balanceDAO.getBalance().get(0).getBtcBalance());
         assertEquals(new BigDecimal("3.0"), balanceDAO.getBalance().get(0).getBtcReserved());
         assertEquals(new BigDecimal("4.0"), balanceDAO.getBalance().get(0).getFee());

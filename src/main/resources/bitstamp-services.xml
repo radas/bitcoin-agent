@@ -13,16 +13,30 @@
 		class="cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl">
 		<property name="bitstampUrl" value="${bitstampUrl}" />
 		<property name="bitstampBalanceUrl" value="${bitstampBalanceUrl}" />
-		<property name="bitstampAuth" ref="bitstampAuth" />
+		<property name="bitstampBuyUrl" value="${bitstampBuyUrl}" />
+		<property name="bitstampSellUrl" value="${bitstampSellUrl}" />
+		<property name="bitstampRequest" ref="bitstampRequest" />
 		<property name="restTemplate" ref="restTemplate" />
 	</bean>
 
 	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+		<property name="errorHandler" ref="restResponseErrorHandler" />
 		<property name="messageConverters">
 			<list>
-				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+				<bean
+					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
 				<bean class="org.springframework.http.converter.FormHttpMessageConverter" />
 			</list>
 		</property>
 	</bean>
+
+	<bean id="bitstampRequest"
+		class="cz.kavan.radek.agent.bitcoin.service.impl.BitstampRequestImpl">
+		<property name="bitstampAuth" ref="bitstampAuth" />
+	</bean>
+
+	<bean id="restResponseErrorHandler"
+		class="cz.kavan.radek.agent.bitcoin.errorhandling.resttemplate.RestResponseErrorHandler">
+	</bean>
+
 </beans>

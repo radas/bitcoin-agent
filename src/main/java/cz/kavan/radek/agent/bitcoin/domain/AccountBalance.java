@@ -2,63 +2,77 @@ package cz.kavan.radek.agent.bitcoin.domain;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AccountBalance {
 
-    private BigDecimal usd_balance;
-    private BigDecimal btc_balance;
-    private BigDecimal usd_reserved;
-    private BigDecimal btc_reserved;
-    private BigDecimal usd_available;
-    private BigDecimal btc_available;
+    @JsonProperty("usd_balance")
+    private BigDecimal usdBalance;
+
+    @JsonProperty("btc_balance")
+    private BigDecimal btcBalance;
+
+    @JsonProperty("usd_reserved")
+    private BigDecimal usdReserved;
+
+    @JsonProperty("btc_reserved")
+    private BigDecimal btcReserved;
+
+    @JsonProperty("usd_available")
+    private BigDecimal usdAvailable;
+
+    @JsonProperty("btc_available")
+    private BigDecimal btcAvailable;
+
     private BigDecimal fee;
     private String error;
 
-    public BigDecimal getUsd_balance() {
-        return usd_balance;
+    public BigDecimal getUsdBalance() {
+        return usdBalance;
     }
 
-    public void setUsd_balance(BigDecimal usd_balance) {
-        this.usd_balance = usd_balance;
+    public void setUsdBalance(BigDecimal usdBalance) {
+        this.usdBalance = usdBalance;
     }
 
-    public BigDecimal getBtc_balance() {
-        return btc_balance;
+    public BigDecimal getBtcBalance() {
+        return btcBalance;
     }
 
-    public void setBtc_balance(BigDecimal btc_balance) {
-        this.btc_balance = btc_balance;
+    public void setBtcBalance(BigDecimal btcBalance) {
+        this.btcBalance = btcBalance;
     }
 
-    public BigDecimal getUsd_reserved() {
-        return usd_reserved;
+    public BigDecimal getUsdReserved() {
+        return usdReserved;
     }
 
-    public void setUsd_reserved(BigDecimal usd_reserved) {
-        this.usd_reserved = usd_reserved;
+    public void setUsdReserved(BigDecimal usdReserved) {
+        this.usdReserved = usdReserved;
     }
 
-    public BigDecimal getBtc_reserved() {
-        return btc_reserved;
+    public BigDecimal getBtcReserved() {
+        return btcReserved;
     }
 
-    public void setBtc_reserved(BigDecimal btc_reserved) {
-        this.btc_reserved = btc_reserved;
+    public void setBtcReserved(BigDecimal btcReserved) {
+        this.btcReserved = btcReserved;
     }
 
-    public BigDecimal getUsd_available() {
-        return usd_available;
+    public BigDecimal getUsdAvailable() {
+        return usdAvailable;
     }
 
-    public void setUsd_available(BigDecimal usd_available) {
-        this.usd_available = usd_available;
+    public void setUsdAvailable(BigDecimal usdAvailable) {
+        this.usdAvailable = usdAvailable;
     }
 
-    public BigDecimal getBtc_available() {
-        return btc_available;
+    public BigDecimal getBtcAvailable() {
+        return btcAvailable;
     }
 
-    public void setBtc_available(BigDecimal btc_available) {
-        this.btc_available = btc_available;
+    public void setBtcAvailable(BigDecimal btcAvailable) {
+        this.btcAvailable = btcAvailable;
     }
 
     public BigDecimal getFee() {

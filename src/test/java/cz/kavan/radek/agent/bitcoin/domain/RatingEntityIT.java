@@ -21,7 +21,7 @@ import cz.kavan.radek.test.annotation.IntegrationTest;
 
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/bitstamp-web-service-IT.xml" })
+@ContextConfiguration(locations = { "classpath:/bitstamp-services-IT.xml" })
 @Transactional
 public class RatingEntityIT {
 
@@ -44,9 +44,14 @@ public class RatingEntityIT {
     public void shouldBeAbleToPersistAnObject() throws ParseException {
 
         rating.setRating(new BigDecimal("800.0"));
-
         ratingDAO.addRating(rating);
 
         assertEquals(new BigDecimal("800.0"), ratingDAO.getRating());
+
+        rating.setRating(new BigDecimal("900.0"));
+        ratingDAO.updateRating(rating);
+
+        assertEquals(new BigDecimal("900.0"), ratingDAO.getRating());
+
     }
 }

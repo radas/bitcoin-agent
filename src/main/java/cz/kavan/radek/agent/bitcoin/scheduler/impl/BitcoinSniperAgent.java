@@ -7,10 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cz.kavan.radek.agent.bitcoin.domain.AccountBalance;
+import cz.kavan.radek.agent.bitcoin.domain.Ticker;
 import cz.kavan.radek.agent.bitcoin.domain.dao.AccountBalanceDAO;
 import cz.kavan.radek.agent.bitcoin.domain.dao.EmaDAO;
 import cz.kavan.radek.agent.bitcoin.domain.entity.AccountBalanceEntity;
 import cz.kavan.radek.agent.bitcoin.domain.entity.EmaEntity;
+import cz.kavan.radek.agent.bitcoin.domain.entity.RatingEntity;
 import cz.kavan.radek.agent.bitcoin.mapper.impl.AccountBalanceMapper;
 import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
 import cz.kavan.radek.agent.bitcoin.strategy.EmaStrategy;
@@ -26,17 +28,17 @@ public class BitcoinSniperAgent extends Agent {
     private AccountBalanceEntity balance;
 
     private EmaEntity ema;
+    private RatingEntity ratingEntity;
     private EmaDAO emaDao;
 
-    private BigDecimal lastAsk;
-    private BigDecimal lastBid;
+    private Ticker ticker;
 
     @Override
     public void startAgent() {
         try {
             populateTradeSniper();
         } catch (Exception e) {
-            logger.error("Something is wrong with BitcoinSniperAgent: " + e);
+            logger.error("Something is wrong with BitcoinSniperAgent: ", e);
         }
 
     }
@@ -48,14 +50,13 @@ public class BitcoinSniperAgent extends Agent {
     }
 
     private void initBitstampValues() {
-        AccountBalance accountBalance = bitstamp.getAccountBalance().getBody();
+        accountBalance = bitstamp.getAccountBalance().getBody();
 
         if (bitstamp == null) {
             throw new IllegalArgumentException("Bitstamp market info is not available");
 
         } else {
-            lastAsk = bitstamp.getActualMarket().getAsk();
-            lastBid = bitstamp.getActualMarket().getBid();
+            ticker = bitstamp.getActualMarket();
         }
 
         if (accountBalance != null) {
@@ -65,68 +66,121 @@ public class BitcoinSniperAgent extends Agent {
     }
 
     private void writeAccountInfo() {
-        if (balance.getBtc_available() == null || balance.getUsd_available() == null) {
+        if (balance.getBtcAvailable() == null || balance.getUsdAvailable() == null) {
             logger.error("Can't get account status: {}", accountBalance.getError());
             throw new IllegalArgumentException("Can't get info about account status: " + accountBalance.getError());
         }
-        logger.debug("Status of account status. BTC: {} USD: {}", balance.getBtc_available(),
-                balance.getUsd_available());
+        logger.debug("Status of account status. BTC: {} USD: {}", balance.getBtcAvailable(), balance.getUsdAvailable());
 
         balanceDAO.addAccountBalance(balance);
 
     }
 
     private void shotBySniper() {
-        logger.info("I'm trying to shot on the market!");
+        logger.debug("I'm trying to shot on the market!");
+        writeEmaStats();
 
         if (isSellable()) {
-            logger.info("Ok, I can sell {} BTC", balance.getBtc_available());
-
-            logger.info("I can sell BTC when actual buy is bigger then: {}", getRatingInfo());
-            logger.info("Bigger then: {}", limitForSellingBtc());
+            populateSelling();
         } else {
-            logger.info("Ok, I can buy BTC with price {} USD", balance.getUsd_available());
-
-            logger.info("I can buy when actual sell is lower then: {}", getRatingInfo());
-            logger.info("Lower then: {}", limitForBuyingBtc());
+            populateBuying();
         }
 
     }
 
+    private void writeEmaStats() {
+        BigDecimal emaSell = EmaStrategy
+                .computeEmaIndex(true, tickerDAO.getLastTickers(), emaDao.getEma().getEmaSell());
+
+        BigDecimal emaBuy = EmaStrategy.computeEmaIndex(false, tickerDAO.getLastTickers(), emaDao.getEma().getEmaBuy());
+
+        ema = new EmaEntity();
+        ema.setEmaSell(emaSell);
+        ema.setEmaBuy(emaBuy);
+
+        emaDao.addEma(ema);
+    }
+
+    void populateSelling() {
+        logger.debug("Ok, I can sell {} BTC", balance.getBtcAvailable());
+        logger.debug("I can sell BTC when actual buy is bigger then: {}", getRatingInfo());
+        logger.debug("Bigger then: {}", limitForSellingBtc());
+        logger.debug("And second condition is that must be lower than {}", emaDao.getEma().getEmaSell());
+
+        final BigDecimal lastBid = ticker.getBid();
+
+        if (lastBid.compareTo(limitForSellingBtc()) == 1) {
+            logger.debug("super, zisk je vetsi");
+            if (lastBid.compareTo(emaDao.getEma().getEmaSell()) == -1) {
+                sellBTC(lastBid);
+            }
+
+        }
+    }
+
+    private void sellBTC(BigDecimal lastBid) {
+        logger.debug("Trade is comming down, sell it!");
+        logger.debug("Sell price: {} ", lastBid);
+
+        bitstamp.sellBTC(balance.getBtcAvailable(), lastBid);
+
+        logger.debug("Updating DB");
+        ratingEntity = new RatingEntity();
+        ratingEntity.setRating(lastBid);
+        ratingDAO.updateRating(ratingEntity);
+    }
+
+    void populateBuying() {
+        logger.debug("Ok, I can buy BTC with price {} USD", balance.getUsdAvailable());
+        logger.debug("I can buy when actual sell is lower then: {}", getRatingInfo());
+        logger.debug("Lower then: {}", limitForBuyingBtc());
+
+        BigDecimal lastAsk = ticker.getAsk();
+        if (lastAsk.compareTo(limitForBuyingBtc()) == -1) {
+            logger.debug("great, gain is bigger vetsi");
+            if (lastAsk.compareTo(emaDao.getEma().getEmaBuy()) == 1) {
+                buyBTC(lastAsk);
+
+            }
+
+        }
+    }
+
+    private void buyBTC(BigDecimal lastAsk) {
+        logger.debug("Trade is comming up, buy it!");
+        logger.debug("Price: {} ", lastAsk);
+
+        BigDecimal fee = (balance.getUsdAvailable().divide(new BigDecimal(100))).multiply(balance.getFee());
+
+        logger.debug("fee: {} ", fee);
+
+        BigDecimal amount = (balance.getUsdAvailable().subtract(fee)).divide(lastAsk, 2, RoundingMode.DOWN);
+
+        logger.debug("Amount: {} ", amount);
+
+        logger.debug("Account status {}", balance.getUsdAvailable());
+
+        bitstamp.buyBTC(amount, lastAsk);
+
+        logger.debug("Updating DB");
+        ratingEntity = new RatingEntity();
+        ratingEntity.setRating(lastAsk);
+        ratingDAO.updateRating(ratingEntity);
+    }
+
     boolean isSellable() {
-        int hasMinimalAvailableBTC = balance.getBtc_available().compareTo(new BigDecimal("0.05"));
-        int hasMinimalAvailableUSD = balance.getUsd_available().compareTo(new BigDecimal("10.00"));
+        int hasMinimalAvailableBTC = balance.getBtcAvailable().compareTo(new BigDecimal("0.05"));
+        int hasMinimalAvailableUSD = balance.getUsdAvailable().compareTo(new BigDecimal("10.00"));
 
         if ((hasMinimalAvailableBTC == -1) && (hasMinimalAvailableUSD == -1)) {
-            logger.info("No BTC or Money = no funny");
-
-            BigDecimal emaSell = EmaStrategy.computeEmaIndex(true, tickerDAO.getLastTickers(), emaDao.getEma()
-                    .getEmaSell());
-
-            BigDecimal emaBuy = EmaStrategy.computeEmaIndex(false, tickerDAO.getLastTickers(), emaDao.getEma()
-                    .getEmaBuy());
-
-            logger.info("I'm trying to get and save new EMA!");
-            logger.info("Last sell EMA is {}", emaDao.getEma().getEmaSell());
-            logger.info("New last sell EMA is {}", emaSell);
-
-            logger.info("Last buy EMA is {}", emaDao.getEma().getEmaBuy());
-            logger.info("New last buy EMA is {}", emaBuy);
-
-            ema = new EmaEntity();
-            ema.setEmaSell(emaSell);
-            ema.setEmaBuy(emaBuy);
-
-            emaDao.addEma(ema);
-
             throw new IllegalArgumentException("No BTC or Money = no funny");
         }
-        return ((balance.getBtc_available().multiply(getRatingInfo())).compareTo(balance.getUsd_available())) == 1;
+        return ((balance.getBtcAvailable().multiply(getRatingInfo())).compareTo(balance.getUsdAvailable())) == 1;
     }
 
     BigDecimal limitForSellingBtc() {
         BigDecimal needRateWithGain = getRatingInfo().add(moneyGain);
-        BigDecimal fee = (((needRateWithGain).multiply(balance.getBtc_available())).divide(new BigDecimal(100)))
+        BigDecimal fee = (((needRateWithGain).multiply(balance.getBtcAvailable())).divide(new BigDecimal(100)))
                 .multiply(balance.getFee());
         return needRateWithGain.add(fee);
     }
@@ -141,7 +195,7 @@ public class BitcoinSniperAgent extends Agent {
     }
 
     BigDecimal obtainBTCpossibleToBuy(BigDecimal needRateWithGain) {
-        return balance.getUsd_available().divide(needRateWithGain, 2, RoundingMode.FLOOR);
+        return balance.getUsdAvailable().divide(needRateWithGain, 2, RoundingMode.FLOOR);
     }
 
     public void setBalanceDAO(AccountBalanceDAO balanceDAO) {

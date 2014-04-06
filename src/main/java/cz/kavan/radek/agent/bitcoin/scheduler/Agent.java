@@ -6,7 +6,7 @@ import cz.kavan.radek.agent.bitcoin.domain.dao.RatingDAO;
 import cz.kavan.radek.agent.bitcoin.domain.dao.TickerDAO;
 import cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl;
 
-public abstract class Agent {
+public abstract class Agent implements IAgent {
 
     protected BitstampClientImpl bitstamp;
     protected RatingDAO ratingDAO;

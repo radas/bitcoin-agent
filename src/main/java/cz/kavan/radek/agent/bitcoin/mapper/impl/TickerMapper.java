@@ -6,6 +6,9 @@ import cz.kavan.radek.agent.bitcoin.utils.TimeUtil;
 
 public class TickerMapper {
 
+    private TickerMapper() {
+    }
+
     public static void mapTickerResponse(Ticker ticker, TickerEntity target) {
 
         long timestamp = ticker.getTimestamp();

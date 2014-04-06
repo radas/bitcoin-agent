@@ -79,12 +79,30 @@
 		</rollingPolicy>
 	</appender>
 
+	<appender name="restAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/resttemplate.log</file>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/resttemplate-%d{yyyy-MM-dd}.log.gz
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>5</maxHistory>
+		</rollingPolicy>
+	</appender>
 
-	<logger name="cz.kavan.radek.agent.bitcoin" level="INFO">
+
+	<logger name="cz.kavan.radek.agent.bitcoin" level="DEBUG">
 		<appender-ref ref="fileAppender" />
 	</logger>
 
-	<logger name="org.springframework" additivity="false" level="ERROR">
+	<logger name="org.springframework" additivity="false" level="DEBUG">
 		<appender-ref ref="springAppender" />
 	</logger>
 
@@ -94,6 +112,10 @@
 
 	<logger name="org.quartz" additivity="false" level="ERROR">
 		<appender-ref ref="quartzAppender" />
+	</logger>
+
+	<logger name="resttemplate" additivity="false" level="DEBUG">
+		<appender-ref ref="restAppender" />
 	</logger>
 
 

@@ -13,19 +13,19 @@ public class ApiKeyGenerator {
     private static final String CRYPT_ALG = "HmacSHA256";
 
     public String getApiSignature(String nonce) throws Exception {
-        Mac sha256_HMAC = populateSecretKeySpec();
+        Mac sha256HMAC = populateSecretKeySpec();
 
-        byte[] hash = sha256_HMAC.doFinal(generateApiMessage(nonce).getBytes());
+        byte[] hash = sha256HMAC.doFinal(generateApiMessage(nonce).getBytes());
 
         return Hex.encodeHexString(hash).toUpperCase();
 
     }
 
     private Mac populateSecretKeySpec() throws Exception {
-        Mac sha256_HMAC = Mac.getInstance(CRYPT_ALG);
+        Mac sha256HMAC = Mac.getInstance(CRYPT_ALG);
         SecretKeySpec secretKey = new SecretKeySpec(getApiSecret().getBytes(), CRYPT_ALG);
-        sha256_HMAC.init(secretKey);
-        return sha256_HMAC;
+        sha256HMAC.init(secretKey);
+        return sha256HMAC;
     }
 
     private String generateApiMessage(String nonce) throws Exception {

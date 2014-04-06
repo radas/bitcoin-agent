@@ -8,6 +8,8 @@ public interface RatingDAO {
 
     void addRating(RatingEntity rating);
 
+    void updateRating(RatingEntity rating);
+
     BigDecimal getRating();
 
 }

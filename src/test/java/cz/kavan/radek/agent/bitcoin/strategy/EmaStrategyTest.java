@@ -22,8 +22,8 @@ public class EmaStrategyTest {
 
         for (int i = 500; i < 506; i++) {
             TickerEntity entity = new TickerEntity();
-            entity.setAsk(new BigDecimal(i));
-            entity.setBid(new BigDecimal(i + 1));
+            entity.setBid(new BigDecimal(i));
+            entity.setAsk(new BigDecimal(i + 1));
             lastPrices.add(entity);
         }
 

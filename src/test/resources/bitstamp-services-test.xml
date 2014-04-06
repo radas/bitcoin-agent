@@ -9,8 +9,15 @@
 		class="cz.kavan.radek.agent.bitcoin.service.impl.BitstampClientImpl">
 		<property name="bitstampUrl" value="http://test" />
 		<property name="bitstampBalanceUrl" value="http://test" />
-		<property name="bitstampAuth" ref="bitstampAuth" />
+		<property name="bitstampBuyUrl" value="http://test" />
+		<property name="bitstampSellUrl" value="http://test" />
+		<property name="bitstampRequest" ref="bitstampRequest" />
 		<property name="restTemplate" ref="restTemplate" />
+	</bean>
+
+	<bean id="bitstampRequest"
+		class="cz.kavan.radek.agent.bitcoin.service.impl.BitstampRequestImpl">
+		<property name="bitstampAuth" ref="bitstampAuth" />
 	</bean>
 
 	<bean id="bitstampAuth" class="cz.kavan.radek.agent.bitcoin.auth.impl.BitstampAuthImpl">

@@ -16,7 +16,7 @@ import cz.kavan.radek.agent.bitcoin.domain.dao.ApiKeyDAO;
 import cz.kavan.radek.agent.bitcoin.domain.entity.ApiKeyEntity;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = SpringockitoContextLoader.class, locations = { "classpath:/bitstamp-web-service-test.xml" })
+@ContextConfiguration(loader = SpringockitoContextLoader.class, locations = { "classpath:/bitstamp-services-test.xml" })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class ApiKeyGeneratorTest {
 

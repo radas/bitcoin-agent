@@ -5,7 +5,7 @@
 
 	<import resource="classpath:datasource.xml" />
 	<import resource="classpath:bitstamp-auth.xml" />
-    <import resource="classpath:bitstamp-web-service.xml" />
+    <import resource="classpath:bitstamp-services.xml" />
 	<import resource="classpath:scheduler.xml" />
 
 </beans>

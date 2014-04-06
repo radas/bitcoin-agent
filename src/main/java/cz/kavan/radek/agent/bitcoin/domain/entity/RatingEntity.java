@@ -1,12 +1,9 @@
 package cz.kavan.radek.agent.bitcoin.domain.entity;
 
-import static javax.persistence.GenerationType.AUTO;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -18,7 +15,6 @@ public class RatingEntity {
     private BigDecimal rating;
 
     @Id
-    @GeneratedValue(strategy = AUTO)
     @Column
     private long id;
 
@@ -32,6 +28,14 @@ public class RatingEntity {
 
     public void setRating(BigDecimal rating) {
         this.rating = rating;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
 }

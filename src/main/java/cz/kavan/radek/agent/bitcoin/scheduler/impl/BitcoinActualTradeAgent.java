@@ -12,8 +12,8 @@ import cz.kavan.radek.agent.bitcoin.scheduler.Agent;
  * 
  * @author radek
  * 
- *         bid | nejvyšší nákupní nabídka - za tohle prodavam ask | Nejnižší
- *         prodejní nabídka - za tohle nakupuji
+ *         bid | nejvyšší nákupní nabídka - za tohle prodavam ask |
+ *         Nejnižšíprodejní nabídka - za tohle nakupuji
  */
 public class BitcoinActualTradeAgent extends Agent {
 
@@ -27,7 +27,7 @@ public class BitcoinActualTradeAgent extends Agent {
         try {
             populateTradeInfo();
         } catch (Exception e) {
-            logger.error("Something is wrong with BitcoinActualTradeAgent : " + e);
+            logger.error("Something is wrong with BitcoinActualTradeAgent : ", e);
         }
 
     }

@@ -22,24 +22,24 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
-import cz.kavan.radek.agent.bitcoin.auth.BitstampAuth;
 import cz.kavan.radek.agent.bitcoin.domain.AccountBalance;
-import cz.kavan.radek.agent.bitcoin.service.BitstampClient;
+import cz.kavan.radek.agent.bitcoin.service.MarketClient;
+import cz.kavan.radek.agent.bitcoin.service.MarketRequest;
 import cz.kavan.radek.agent.bitcoin.utils.ApiKeyGenerator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = SpringockitoContextLoader.class, locations = { "classpath:/bitstamp-web-service-test.xml" })
+@ContextConfiguration(loader = SpringockitoContextLoader.class, locations = { "classpath:/bitstamp-services-test.xml" })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class BitstampClientTest {
 
     @Autowired
-    private BitstampClient bitstamp;
+    private MarketClient bitstamp;
 
     @Autowired
     private RestTemplate restTemplate;
 
     @Autowired
-    private BitstampAuth bitstampAuth;
+    private MarketRequest bitstampRequest;
 
     @ReplaceWithMock
     @Autowired
@@ -52,14 +52,14 @@ public class BitstampClientTest {
         responseHeaders.set("HeaderKey", "HeaderData");
 
         AccountBalance account = new AccountBalance();
-        account.setBtc_available(new BigDecimal("10.00"));
-        account.setUsd_available(new BigDecimal("20.00"));
+        account.setBtcAvailable(new BigDecimal("10.00"));
+        account.setUsdAvailable(new BigDecimal("20.00"));
 
         ResponseEntity<AccountBalance> response = new ResponseEntity<AccountBalance>(account, responseHeaders,
                 HttpStatus.CREATED);
 
         when(
-                restTemplate.exchange("http://test", HttpMethod.POST, bitstampAuth.getHttpAuthEntity(),
+                restTemplate.exchange("http://test", HttpMethod.POST, bitstampRequest.createRequest(),
                         AccountBalance.class)).thenReturn(response);
 
     }
@@ -71,12 +71,12 @@ public class BitstampClientTest {
 
     @Test
     public void accountBalanceValues() {
-        assertEquals(new BigDecimal("10.00"), bitstamp.getAccountBalance().getBody().getBtc_available());
-        assertEquals(new BigDecimal("20.00"), bitstamp.getAccountBalance().getBody().getUsd_available());
+        assertEquals(new BigDecimal("10.00"), bitstamp.getAccountBalance().getBody().getBtcAvailable());
+        assertEquals(new BigDecimal("20.00"), bitstamp.getAccountBalance().getBody().getUsdAvailable());
     }
 
     @Test
     public void accountBalanceNullValues() {
-        assertNull(bitstamp.getAccountBalance().getBody().getBtc_reserved());
+        assertNull(bitstamp.getAccountBalance().getBody().getBtcReserved());
     }
 }

@@ -25,6 +25,14 @@ public class RatingDAOImpl implements RatingDAO {
 
     @Override
     @Transactional
+    public void updateRating(RatingEntity rating) {
+        rating.setId(1);
+        sessionFactory.getCurrentSession().update(rating);
+
+    }
+
+    @Override
+    @Transactional
     public BigDecimal getRating() {
         RatingEntity rating = (RatingEntity) sessionFactory.getCurrentSession().createCriteria(RatingEntity.class)
                 .list().get(0);

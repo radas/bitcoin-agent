@@ -19,12 +19,12 @@ DROP TABLE IF EXISTS bitstamp_rating;
 
 CREATE TABLE bitstamp_rating
 (
-    id      BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    id      INT PRIMARY KEY,
     rating       DECIMAL(10,2),
-    created TIMESTAMP NOT NULL DEFAULT NOW()
+    created TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP
 );
 
-INSERT INTO bitstamp_rating (sell_rating, buy_rating) VALUES (800.00, 800.00);
+INSERT INTO bitstamp_rating (rating) VALUES (800.00);
 
 
 DROP TABLE IF EXISTS bitstamp_ticker;

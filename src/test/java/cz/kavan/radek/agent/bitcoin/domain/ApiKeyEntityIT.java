@@ -20,7 +20,7 @@ import cz.kavan.radek.test.annotation.IntegrationTest;
 
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/bitstamp-web-service-IT.xml" })
+@ContextConfiguration(locations = { "classpath:/bitstamp-services-IT.xml" })
 @Transactional
 public class ApiKeyEntityIT {
 

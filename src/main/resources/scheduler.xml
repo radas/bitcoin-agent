@@ -22,6 +22,11 @@
 		<property name="emaDao" ref="emaDAO" />
 		<property name="moneyGain" value="${money.gain}" />
 	</bean>
+	
+	<bean id="bitconDBCleanerAgent" 
+        class="cz.kavan.radek.agent.bitcoin.scheduler.impl.BitconDBCleanerAgent">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 
 
 	<!-- Job definitions -->
@@ -36,18 +41,29 @@
 		<property name="targetObject" ref="bitcoinSniperAgent" />
 		<property name="targetMethod" value="startAgent" />
 	</bean>
+	
+	<bean id="bitconDBCleanerAgentJob"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="bitconDBCleanerAgent" />
+        <property name="targetMethod" value="startAgent" />
+    </bean>
 
 
 	<!-- Scheduler definitions -->
 	<bean id="bitcoinActualTradeAgentScheduler" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="bitcoinActualTradeAgentJob" />
-		<property name="cronExpression" value="0 */10 * * * ?" />
+		<property name="cronExpression" value="0 0/10 * * * ?" />
 	</bean>
 
 	<bean id="bitcoinSniperAgentcheduler" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="bitcoinSniperAgentJob" />
 		<property name="cronExpression" value="30 1 0/1 * * ?" />
 	</bean>
+	
+	<bean id="bitconDBCleanerAgentScheduler" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="bitconDBCleanerAgentJob" />
+        <property name="cronExpression" value="0 0 3 * * ?" />
+    </bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="waitForJobsToCompleteOnShutdown" value="true" />
@@ -55,6 +71,7 @@
 			<list>
 				<ref bean="bitcoinActualTradeAgentScheduler" />
 				<ref bean="bitcoinSniperAgentcheduler" />
+				<ref bean="bitconDBCleanerAgentScheduler" />
 			</list>
 		</property>
 	</bean>
