@@ -84,6 +84,9 @@ public class BitstampClientImpl implements MarketClient {
     }
 
     private void checkIfErrorOccurs(BigDecimal amount, BigDecimal price, ResponseEntity<Transaction> responseEntity) {
+        if (responseEntity == null) {
+            return;
+        }
         if (StringUtils.hasText(responseEntity.getBody().getError().toString())) {
             logger.error("Error response: {}", responseEntity.getBody().getError());
             logger.error("Amount : {} Price : {} Url: {}", amount, price);
