@@ -84,14 +84,17 @@ public class BitstampClientImpl implements MarketClient {
     }
 
     private void checkIfErrorOccurs(BigDecimal amount, BigDecimal price, ResponseEntity<Transaction> responseEntity) {
-        if (responseEntity == null) {
+
+        try {
+            if (StringUtils.hasText(responseEntity.getBody().getError().toString())) {
+                logger.error("Error response: {}", responseEntity.getBody().getError());
+                logger.error("Amount : {} Price : {} Url: {}", amount, price);
+                throw new BitstampClientException("Can't buy or sell btc.");
+            }
+        } catch (Exception e) {
             return;
         }
-        if (StringUtils.hasText(responseEntity.getBody().getError().toString())) {
-            logger.error("Error response: {}", responseEntity.getBody().getError());
-            logger.error("Amount : {} Price : {} Url: {}", amount, price);
-            throw new BitstampClientException("Can't buy or sell btc.");
-        }
+
     }
 
     public void setBitstampUrl(String bitstampUrl) {
