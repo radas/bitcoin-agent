@@ -97,6 +97,24 @@
 		</rollingPolicy>
 	</appender>
 
+	<appender name="statsAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/stats.log</file>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/stats-%d{yyyy-MM}.log.gz
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>12</maxHistory>
+		</rollingPolicy>
+	</appender>
+
 
 	<logger name="cz.kavan.radek.agent.bitcoin" level="DEBUG">
 		<appender-ref ref="fileAppender" />
@@ -116,6 +134,10 @@
 
 	<logger name="resttemplate" additivity="false" level="DEBUG">
 		<appender-ref ref="restAppender" />
+	</logger>
+
+	<logger name="stats" additivity="false" level="INFO">
+		<appender-ref ref="statsAppender" />
 	</logger>
 
 

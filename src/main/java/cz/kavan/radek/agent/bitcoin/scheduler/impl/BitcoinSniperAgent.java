@@ -20,6 +20,7 @@ import cz.kavan.radek.agent.bitcoin.strategy.EmaStrategy;
 public class BitcoinSniperAgent extends Agent {
 
     private static final Logger logger = LoggerFactory.getLogger(BitcoinSniperAgent.class);
+    private static final Logger statsLogger = LoggerFactory.getLogger("statsAppender");
 
     private AccountBalanceDAO balanceDAO;
     private BigDecimal moneyGain;
@@ -122,6 +123,8 @@ public class BitcoinSniperAgent extends Agent {
         logger.debug("Trade is comming down, sell it!");
         logger.debug("Sell price: {} ", lastBid);
 
+        statsLogger.info("Trying to sell it with price: {}", lastBid);
+
         bitstamp.sellBTC(balance.getBtcAvailable(), lastBid);
 
         logger.debug("Updating DB");
@@ -149,6 +152,8 @@ public class BitcoinSniperAgent extends Agent {
     private void buyBTC(BigDecimal lastAsk) {
         logger.debug("Trade is comming up, buy it!");
         logger.debug("Price: {} ", lastAsk);
+
+        statsLogger.info("Trying to buy it with price: {}", lastAsk);
 
         BigDecimal fee = (balance.getUsdAvailable().divide(new BigDecimal(100))).multiply(balance.getFee());
 
