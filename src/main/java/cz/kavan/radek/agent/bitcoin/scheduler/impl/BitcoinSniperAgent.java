@@ -38,7 +38,7 @@ public class BitcoinSniperAgent extends Agent {
     public void startAgent() {
         try {
             populateTradeSniper();
-        } catch (final Exception e) {
+        } catch (Exception e) {
             logger.error("Something is wrong with BitcoinSniperAgent: ", e);
         }
 
@@ -90,11 +90,10 @@ public class BitcoinSniperAgent extends Agent {
     }
 
     private void writeEmaStats() {
-        final BigDecimal emaSell = EmaStrategy.computeEmaIndex(true, tickerDAO.getLastTickers(), emaDao.getEma()
-                .getEmaSell());
+        BigDecimal emaSell = EmaStrategy
+                .computeEmaIndex(true, tickerDAO.getLastTickers(), emaDao.getEma().getEmaSell());
 
-        final BigDecimal emaBuy = EmaStrategy.computeEmaIndex(false, tickerDAO.getLastTickers(), emaDao.getEma()
-                .getEmaBuy());
+        BigDecimal emaBuy = EmaStrategy.computeEmaIndex(false, tickerDAO.getLastTickers(), emaDao.getEma().getEmaBuy());
 
         ema = new EmaEntity();
         ema.setEmaSell(emaSell);
@@ -106,10 +105,11 @@ public class BitcoinSniperAgent extends Agent {
     void populateSelling() {
         logger.debug("Ok, I can sell {} BTC", balance.getBtcAvailable());
         logger.debug("I can sell BTC when actual buy is bigger then: {}", getRatingInfo());
-        logger.debug("Bigger then: {} and actual is {}", limitForSellingBtc(), ticker.getBid());
-        logger.debug("And second condition is that must be lower than {}", emaDao.getEma().getEmaSell());
 
         final BigDecimal lastBid = ticker.getBid();
+
+        logger.debug("Bigger then: {} and actual is {}", limitForSellingBtc(), lastBid);
+        logger.debug("And second condition is that must be lower than {}", emaDao.getEma().getEmaSell());
 
         if (lastBid.compareTo(limitForSellingBtc()) == 1) {
             logger.info("great, gain is bigger");
@@ -137,10 +137,11 @@ public class BitcoinSniperAgent extends Agent {
     void populateBuying() {
         logger.debug("Ok, I can buy BTC with price {} USD", balance.getUsdAvailable());
         logger.debug("I can buy when actual sell is lower then: {}", getRatingInfo());
-        logger.debug("Lower then: {} and actual is {}", limitForBuyingBtc(), ticker.getAsk());
-        logger.debug("And second condition is that must be bigger than {}", emaDao.getEma().getEmaBuy());
 
         final BigDecimal lastAsk = ticker.getAsk();
+
+        logger.debug("Lower then: {} and actual is {}", limitForBuyingBtc(), lastAsk);
+        logger.debug("And second condition is that must be bigger than {}", emaDao.getEma().getEmaBuy());
 
         if (lastAsk.compareTo(limitForBuyingBtc()) == -1) {
             logger.info("great, gain is bigger vetsi");
@@ -158,11 +159,11 @@ public class BitcoinSniperAgent extends Agent {
 
         statsLogger.info("Trying to buy it with price: {}", lastAsk);
 
-        final BigDecimal fee = (balance.getUsdAvailable().divide(new BigDecimal(100))).multiply(balance.getFee());
+        BigDecimal fee = (balance.getUsdAvailable().divide(new BigDecimal(100))).multiply(balance.getFee());
 
         logger.debug("fee: {} ", fee);
 
-        final BigDecimal amount = (balance.getUsdAvailable().subtract(fee)).divide(lastAsk, 2, RoundingMode.DOWN);
+        BigDecimal amount = (balance.getUsdAvailable().subtract(fee)).divide(lastAsk, 2, RoundingMode.DOWN);
 
         logger.debug("Amount: {} ", amount);
 
@@ -177,8 +178,8 @@ public class BitcoinSniperAgent extends Agent {
     }
 
     boolean isSellable() {
-        final int hasMinimalAvailableBTC = balance.getBtcAvailable().compareTo(new BigDecimal("0.05"));
-        final int hasMinimalAvailableUSD = balance.getUsdAvailable().compareTo(new BigDecimal("10.00"));
+        int hasMinimalAvailableBTC = balance.getBtcAvailable().compareTo(new BigDecimal("0.05"));
+        int hasMinimalAvailableUSD = balance.getUsdAvailable().compareTo(new BigDecimal("10.00"));
 
         if ((hasMinimalAvailableBTC == -1) && (hasMinimalAvailableUSD == -1)) {
             throw new IllegalArgumentException("No BTC or Money = no funny");
@@ -187,17 +188,17 @@ public class BitcoinSniperAgent extends Agent {
     }
 
     BigDecimal limitForSellingBtc() {
-        final BigDecimal needRateWithGain = getRatingInfo().add(moneyGain);
-        final BigDecimal fee = (((needRateWithGain).multiply(balance.getBtcAvailable())).divide(new BigDecimal(100)))
+        BigDecimal needRateWithGain = getRatingInfo().add(moneyGain);
+        BigDecimal fee = (((needRateWithGain).multiply(balance.getBtcAvailable())).divide(new BigDecimal(100)))
                 .multiply(balance.getFee());
         return needRateWithGain.add(fee);
     }
 
     BigDecimal limitForBuyingBtc() {
-        final BigDecimal needRateWithGain = getRatingInfo().subtract(moneyGain);
-        final BigDecimal howManyBitcoinsCanIBuy = obtainBTCpossibleToBuy(needRateWithGain);
+        BigDecimal needRateWithGain = getRatingInfo().subtract(moneyGain);
+        BigDecimal howManyBitcoinsCanIBuy = obtainBTCpossibleToBuy(needRateWithGain);
 
-        final BigDecimal fee = (((needRateWithGain).multiply(howManyBitcoinsCanIBuy)).divide(new BigDecimal(100)))
+        BigDecimal fee = (((needRateWithGain).multiply(howManyBitcoinsCanIBuy)).divide(new BigDecimal(100)))
                 .multiply(balance.getFee());
         return needRateWithGain.subtract(fee);
     }
