@@ -110,8 +110,10 @@ public class BitcoinSniperAgent extends Agent {
 
         final BigDecimal lastBid = ticker.getBid();
 
+        logger.info("Comparing lastBid: {} and limitForSellingBtc: {}", lastBid, limitForSellingBtc());
+
         if (lastBid.compareTo(limitForSellingBtc()) == 1) {
-            logger.debug("super, zisk je vetsi");
+            logger.info("great, gain is bigger");
             if (lastBid.compareTo(emaDao.getEma().getEmaSell()) == -1) {
                 sellBTC(lastBid);
             }
@@ -136,11 +138,13 @@ public class BitcoinSniperAgent extends Agent {
     void populateBuying() {
         logger.debug("Ok, I can buy BTC with price {} USD", balance.getUsdAvailable());
         logger.debug("I can buy when actual sell is lower then: {}", getRatingInfo());
-        logger.debug("Lower then: {}", limitForBuyingBtc());
+        logger.debug("And second condition is that must be bigger than {}", emaDao.getEma().getEmaBuy());
 
         BigDecimal lastAsk = ticker.getAsk();
+        logger.info("Comparing lastAsk: {} and limitForBuyngBtc: {}", lastAsk, limitForBuyingBtc());
+
         if (lastAsk.compareTo(limitForBuyingBtc()) == -1) {
-            logger.debug("great, gain is bigger vetsi");
+            logger.info("great, gain is bigger vetsi");
             if (lastAsk.compareTo(emaDao.getEma().getEmaBuy()) == 1) {
                 buyBTC(lastAsk);
 
