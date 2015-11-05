@@ -20,7 +20,7 @@ import cz.kavan.radek.agent.bitcoin.strategy.EmaStrategy;
 public class BitcoinSniperAgent extends Agent {
 
     private static final Logger logger = LoggerFactory.getLogger(BitcoinSniperAgent.class);
-    private static final Logger statsLogger = LoggerFactory.getLogger("statsAppender");
+    private static final Logger statsLogger = LoggerFactory.getLogger("stats");
 
     private AccountBalanceDAO balanceDAO;
     private BigDecimal moneyGain;

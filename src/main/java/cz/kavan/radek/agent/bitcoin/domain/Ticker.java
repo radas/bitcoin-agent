@@ -2,6 +2,9 @@ package cz.kavan.radek.agent.bitcoin.domain;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Ticker {
 
     private BigDecimal bid;
@@ -21,7 +24,7 @@ public class Ticker {
         return high;
     }
 
-    public void setHigh(BigDecimal high) {
+    public void setHigh(final BigDecimal high) {
         this.high = high;
     }
 
@@ -29,7 +32,7 @@ public class Ticker {
         return last;
     }
 
-    public void setLast(BigDecimal last) {
+    public void setLast(final BigDecimal last) {
         this.last = last;
     }
 
@@ -37,7 +40,7 @@ public class Ticker {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(final long timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -45,7 +48,7 @@ public class Ticker {
         return bid;
     }
 
-    public void setBid(BigDecimal bid) {
+    public void setBid(final BigDecimal bid) {
         this.bid = bid;
     }
 
@@ -53,7 +56,7 @@ public class Ticker {
         return volume;
     }
 
-    public void setVolume(BigDecimal volume) {
+    public void setVolume(final BigDecimal volume) {
         this.volume = volume;
     }
 
@@ -61,7 +64,7 @@ public class Ticker {
         return low;
     }
 
-    public void setLow(BigDecimal low) {
+    public void setLow(final BigDecimal low) {
         this.low = low;
     }
 
@@ -69,7 +72,7 @@ public class Ticker {
         return ask;
     }
 
-    public void setAsk(BigDecimal ask) {
+    public void setAsk(final BigDecimal ask) {
         this.ask = ask;
     }
 
@@ -77,7 +80,7 @@ public class Ticker {
         return vwap;
     }
 
-    public void setVwap(BigDecimal vwap) {
+    public void setVwap(final BigDecimal vwap) {
         this.vwap = vwap;
     }
 
